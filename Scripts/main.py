@@ -23,5 +23,4 @@ while running:
 
     pygame.display.flip()
     pygame.time.Clock().tick(60) / 1000
-    # do you see this?
 pygame.quit()
