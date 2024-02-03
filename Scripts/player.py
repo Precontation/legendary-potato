@@ -3,7 +3,7 @@ import pygame
 class Player(pygame.sprite.Sprite):
     def __init__(self) -> None:
         super().__init__()
-        self.image = pygame.transform.scale_by(pygame.image.load('Images/Player/Up/Up.png'), 10)
+        self.image = pygame.transform.scale_by(pygame.image.load('Images/Player/Up/Up.png'), 5)
         self.rect = self.image.get_rect()
         self.playerDirection = 'Down'
         self.moveSpeed = 5
@@ -21,7 +21,7 @@ class Player(pygame.sprite.Sprite):
             self.playerDirection = 'Right'
             self.rect.x += self.moveSpeed
         if not keys[pygame.K_w] and not keys[pygame.K_a] and not keys[pygame.K_s] and not keys[pygame.K_d]:
-            self.image = pygame.transform.scale_by(pygame.image.load('Images/Player/' + playerDirection + '/' + playerDirection + '.png'), 10)
+            self.image = pygame.transform.scale_by(pygame.image.load('Images/Player/' + playerDirection + '/' + playerDirection + '.png'), 5)
         else:
-            self.image = pygame.transform.scale_by(pygame.image.load('Images/Player/' + playerDirection + '/' + playerDirection + str(animationCycle) + '.png'), 10)
+            self.image = pygame.transform.scale_by(pygame.image.load('Images/Player/' + playerDirection + '/' + playerDirection + str(animationCycle) + '.png'), 5)
         return playerDirection

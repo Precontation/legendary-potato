@@ -20,16 +20,20 @@ while running:
             running = False
     screen.fill('white')
 
-    if playerShouldChangeAnim >= playerAnimSpeed:
-        animationCycle += 1
-        if animationCycle >= 3:
-            animationCycle = 1
-        playerShouldChangeAnim = 1
-    else: 
-        playerShouldChangeAnim += 1
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_w] or keys[pygame.K_a] or keys[pygame.K_s] or keys[pygame.K_d]:
+        if playerShouldChangeAnim >= playerAnimSpeed:
+            animationCycle += 1
+            if animationCycle >= 3:
+                animationCycle = 1
+            playerShouldChangeAnim = 1
+        else: 
+            playerShouldChangeAnim += 1
+    else:
+        animationCycle = 1
 
     playerDirection = character.playerDirection
-    character.move(pygame.key.get_pressed(), character.playerDirection, animationCycle)
+    character.move(keys, character.playerDirection, animationCycle)
     screen.blit(character.image, (character.rect.x, character.rect.y))
 
     pygame.display.flip()
