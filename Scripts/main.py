@@ -17,10 +17,11 @@ while running:
     screen.fill('white')
 
     playerDirection = character.playerDirection
-    character.move(pygame.key.get_pressed(), character.playerDirection, player.animationCycle)
-    character.update(6)
+    character.move(pygame.key.get_pressed(), character.playerDirection)
+    character.update(6, character.shouldChangeAnim, character.animationCycle)
     screen.blit(character.image, (character.rect.x, character.rect.y))
 
     pygame.display.flip()
     pygame.time.Clock().tick(60) / 1000
+    # do you see this?
 pygame.quit()
