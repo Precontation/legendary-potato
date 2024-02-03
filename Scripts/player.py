@@ -7,6 +7,15 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.playerDirection = 'Down'
         self.moveSpeed = 5
+    def scroll(self, world_x, world_y):
+        if self.rect.x >= 50:
+            return
+        elif self.rect.x <= -50:
+            return
+        if self.rect.y >= 50:
+            return
+        elif self.rect.y <= -50:
+            return
     def move(self, keys, playerDirection, animationCycle):
         if keys[pygame.K_w] or keys[pygame.K_UP]:
             self.playerDirection = 'Up'
