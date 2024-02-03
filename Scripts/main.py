@@ -8,6 +8,10 @@ screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.init()
 
 character = player.Player()
+animationCycle = 1
+playerShouldChangeAnim = 1
+playerAnimSpeed = 10
+
 
 running = True
 while running:
@@ -16,9 +20,16 @@ while running:
             running = False
     screen.fill('white')
 
+    if playerShouldChangeAnim >= playerAnimSpeed:
+        animationCycle += 1
+        if animationCycle >= 3:
+            animationCycle = 1
+        playerShouldChangeAnim = 1
+    else: 
+        playerShouldChangeAnim += 1
+
     playerDirection = character.playerDirection
-    character.move(pygame.key.get_pressed(), character.playerDirection)
-    character.update(6, character.shouldChangeAnim, character.animationCycle)
+    character.move(pygame.key.get_pressed(), character.playerDirection, animationCycle)
     screen.blit(character.image, (character.rect.x, character.rect.y))
 
     pygame.display.flip()
