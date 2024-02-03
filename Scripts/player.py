@@ -4,7 +4,6 @@ playerDirection = 'Up'
 moveSpeed = 5
 
 keysPressed = []
-# hi
 
 class Player(pygame.sprite.Sprite):
     def __init__(self) -> None:
