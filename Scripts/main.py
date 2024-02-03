@@ -16,5 +16,5 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-    player
+    # screen.blit(character.image, (character.rect.x, character.rect.y))
 pygame.quit()
