@@ -11,9 +11,13 @@ pygame.init()
 
 # player stuff
 character = player.Player()
-animationCycle = 1
-playerShouldChangeAnim = 1
-playerAnimSpeed = 10
+moveAnimationCycle = 1
+playerShouldChangeMoveAnim = 1
+playerMoveAnimSpeed = 10
+
+idleAnimationCycle = 1
+playerShouldChangeIdleAnim = 1
+playerIdleAnimSpeed = 10  #5 or 10
 
 # moving around stuff
 world_x = 0
@@ -36,18 +40,29 @@ while running:
         yes()
 
     if keys[pygame.K_w] or keys[pygame.K_UP] or keys[pygame.K_a] or keys[pygame.K_LEFT] or keys[pygame.K_s] or keys[pygame.K_DOWN] or keys[pygame.K_d] or keys[pygame.K_RIGHT]:
-        if playerShouldChangeAnim >= playerAnimSpeed:
-            animationCycle += 1
-            if animationCycle >= 3:
-                animationCycle = 1
-            playerShouldChangeAnim = 1
+        playerShouldChangeIdleAnim = 1
+        idleAnimationCycle = 1
+        if playerShouldChangeMoveAnim >= playerMoveAnimSpeed:
+            moveAnimationCycle += 1
+            if moveAnimationCycle >= 3:
+                moveAnimationCycle = 1
+            playerShouldChangeMoveAnim = 1
         else: 
-            playerShouldChangeAnim += 1
+            playerShouldChangeMoveAnim += 1
     else:
-        animationCycle = 1
+        playerShouldChangeMoveAnim = 1
+        moveAnimationCycle = 1
+
+        if playerShouldChangeIdleAnim >= playerIdleAnimSpeed:
+            idleAnimationCycle += 1
+            if idleAnimationCycle >= 3:
+                idleAnimationCycle = 1
+            playerShouldChangeIdleAnim = 1
+        else: 
+            playerShouldChangeIdleAnim += 1
 
     playerDirection = character.playerDirection
-    character.move(keys, character.playerDirection, animationCycle)
+    character.move(keys, character.playerDirection, moveAnimationCycle, idleAnimationCycle)
     screen.blit(character.image, (character.rect.x, character.rect.y))
 
     pygame.display.flip()

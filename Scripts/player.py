@@ -27,7 +27,7 @@ class Player(pygame.sprite.Sprite):
         else:
             return world_y
         
-    def move(self, keys, playerDirection, animationCycle):
+    def move(self, keys, playerDirection, moveAnimationCycle, idleAnimationCycle):
         if keys[pygame.K_w] or keys[pygame.K_UP]:
             self.playerDirection = 'Up'
             self.rect.y -= self.moveSpeed
@@ -41,7 +41,7 @@ class Player(pygame.sprite.Sprite):
             self.playerDirection = 'Right'
             self.rect.x += self.moveSpeed
         if not keys[pygame.K_w] and not keys[pygame.K_UP] and not keys[pygame.K_a] and not keys [pygame.K_LEFT] and not keys[pygame.K_s] and not keys[pygame.K_DOWN] and not keys[pygame.K_d] and not keys[pygame.K_RIGHT]:
-            self.image = pygame.transform.scale_by(pygame.image.load('Images/Player/' + playerDirection + '/' + playerDirection + '.png'), 5)
+            self.image = pygame.transform.scale_by(pygame.image.load('Images/Player/' + playerDirection + '/Idle' + str(idleAnimationCycle) + '.png'), 5)
         else:
-            self.image = pygame.transform.scale_by(pygame.image.load('Images/Player/' + playerDirection + '/' + playerDirection + str(animationCycle) + '.png'), 5)
+            self.image = pygame.transform.scale_by(pygame.image.load('Images/Player/' + playerDirection + '/Moving' + str(moveAnimationCycle) + '.png'), 5)
         return playerDirection
