@@ -16,18 +16,25 @@ playerShouldChangeAnim = 1
 playerAnimSpeed = 10
 
 # moving around stuff
-world_x = 1
-world_y = 1
+world_x = 0
+world_y = 0
 
 running = True
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+
+    world_x = character.scrollX(world_x, screen)
+    world_y = character.scrollY(world_y, screen)
+
     background.updateStuff(screen, world_x, world_y)
+
     keys = pygame.key.get_pressed()
+
     if keys[pygame.K_SPACE] and keys[pygame.K_r]:
         yes()
+
     if keys[pygame.K_w] or keys[pygame.K_UP] or keys[pygame.K_a] or keys[pygame.K_LEFT] or keys[pygame.K_s] or keys[pygame.K_DOWN] or keys[pygame.K_d] or keys[pygame.K_RIGHT]:
         if playerShouldChangeAnim >= playerAnimSpeed:
             animationCycle += 1
