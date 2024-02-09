@@ -4,8 +4,8 @@ import background
 from amazing import yes
 
 # setup stuff
-SCREEN_WIDTH = 340
-SCREEN_HEIGHT = 560
+SCREEN_WIDTH = 500
+SCREEN_HEIGHT = 500
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption('Legendary Potato')
 pygame.init()
