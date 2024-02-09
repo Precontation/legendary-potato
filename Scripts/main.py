@@ -40,7 +40,7 @@ while running:
     if keys[pygame.K_SPACE] and keys[pygame.K_r]:
         yes()
 
-    if keys[pygame.K_w] or keys[pygame.K_UP] or keys[pygame.K_a] or keys[pygame.K_LEFT] or keys[pygame.K_s] or keys[pygame.K_DOWN] or keys[pygame.K_d] or keys[pygame.K_RIGHT]:
+    if character.checkIfMoving(keys):
         playerShouldChangeIdleAnim = 1
         idleAnimationCycle = 1
         if playerShouldChangeMoveAnim >= playerMoveAnimSpeed:
