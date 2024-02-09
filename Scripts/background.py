@@ -1,6 +1,6 @@
 import pygame
 
-background = pygame.transform.scale_by(pygame.image.load('Images/Decoration/Background/Tiles.png'), 15)
+background = pygame.transform.scale_by(pygame.image.load('../Images/Decoration/Background/Tiles.png'), 15)
 
 def updateStuff(screen, world_x, world_y):
     screen.blit(background, (world_x, world_y))
