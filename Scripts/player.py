@@ -3,7 +3,7 @@ import pygame
 class Player(pygame.sprite.Sprite):
     def __init__(self) -> None:
         super().__init__()
-        self.image = pygame.transform.scale_by(pygame.image.load('Images/Player/Up/Up.png'), 5)
+        self.image = pygame.transform.scale_by(pygame.image.load('../Images/Player/Up/Up.png'), 5)
         self.rect = self.image.get_rect()
         self.playerDirection = 'Down'
         self.moveSpeed = 5
@@ -29,7 +29,8 @@ class Player(pygame.sprite.Sprite):
         
     def move(self, keys, playerDirection, moveAnimationCycle, idleAnimationCycle):
         oldPlayerDir = playerDirection
-        hasSwitched = False
+        hasSwitchedX = False
+        hasSwitchedY = False
 
         if keys[pygame.K_w] or keys[pygame.K_UP]:
             self.playerDirection = 'Up'
@@ -43,15 +44,18 @@ class Player(pygame.sprite.Sprite):
         if keys[pygame.K_d] or keys[pygame.K_RIGHT]:
             self.playerDirection = 'Right'
             self.rect.x += self.moveSpeed
-            
+
         if ((keys[pygame.K_a] or keys[pygame.K_LEFT]) and (keys[pygame.K_d] or keys[pygame.K_RIGHT])) and (self.playerDirection == 'Right' or self.playerDirection == 'Left'):
             self.playerDirection = oldPlayerDir
+            hasSwitchedX = True
         if ((keys[pygame.K_w] or keys[pygame.K_UP]) and (keys[pygame.K_s] or keys[pygame.K_DOWN])) and (self.playerDirection == 'Up' or self.playerDirection == 'Down'):
             self.playerDirection = oldPlayerDir
-
+            hasSwitchedY = True
         if not keys[pygame.K_w] and not keys[pygame.K_UP] and not keys[pygame.K_a] and not keys [pygame.K_LEFT] and not keys[pygame.K_s] and not keys[pygame.K_DOWN] and not keys[pygame.K_d] and not keys[pygame.K_RIGHT]:
-            if not (keys[pygame.K_a] and keys[pygame.K_d]) or (keys[pygame.w])
-            self.image = pygame.transform.scale_by(pygame.image.load('Images/Player/' + playerDirection + '/Idle' + str(idleAnimationCycle) + '.png'), 5)
+            self.image = pygame.transform.scale_by(pygame.image.load('../Images/Player/' + playerDirection + '/Idle' + str(idleAnimationCycle) + '.png'), 5)
         else:
-            self.image = pygame.transform.scale_by(pygame.image.load('Images/Player/' + playerDirection + '/Moving' + str(moveAnimationCycle) + '.png'), 5)
+            if not ((hasSwitchedX == True) and (self.playerDirection == 'Left' or self.playerDirection == 'Right')):
+                if not ((hasSwitchedY == True) and (self.playerDirection == 'Up' or self.playerDirection == 'Down')):
+                    self.image = pygame.transform.scale_by(pygame.image.load('../Images/Player/' + playerDirection + '/Moving' + str(moveAnimationCycle) + '.png'), 5)
+                    
         return playerDirection
