@@ -1,5 +1,6 @@
 import pygame
 import player
+import scroll
 import background
 from amazing import yes
 
@@ -23,6 +24,9 @@ playerIdleAnimSpeed = 10  #5 or 10
 # moving around stuff
 world_x = 0
 world_y = 0
+bg = background.Background(screen)
+bg.CheckScroll(screen)
+backgroundName = 'Tiles'
 
 running = True
 while running:
@@ -30,11 +34,14 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    world_x = character.scrollX(world_x, screen)
-    world_y = character.scrollY(world_y, screen)
+    screen.fill('#d67b34') # temporary until i get the working background
 
-    background.updateStuff(screen, world_x, world_y)
+    character.scrollX(world_x, screen, bg)
+    character.scrollY(world_y, screen, bg)
 
+    bgImage = pygame.transform.scale_by(pygame.image.load('Images/Decoration/Background/' + backgroundName + ".png"), 15)
+    bg.ShowBackground(screen)
+    
     keys = pygame.key.get_pressed()
 
     if keys[pygame.K_SPACE] and keys[pygame.K_r]:
@@ -62,7 +69,6 @@ while running:
         else: 
             playerShouldChangeIdleAnim += 1
 
-    playerDirection = character.playerDirection
     character.move(keys, character.playerDirection, moveAnimationCycle, idleAnimationCycle)
     screen.blit(character.image, (character.rect.x, character.rect.y))
 

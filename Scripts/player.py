@@ -1,4 +1,5 @@
 import pygame
+import scroll
 
 class Player(pygame.sprite.Sprite):
     def __init__(self) -> None:
@@ -8,21 +9,31 @@ class Player(pygame.sprite.Sprite):
         self.playerDirection = 'Down'
         self.moveSpeed = 5
 
-    def scrollX(self, world_x, screen):
+    def scrollX(self, world_x, screen, bg):
+        # right
         if self.rect.x >= ((screen.get_width() - self.rect.width) / 2) + 100:
             self.rect.x -= 5
+            scroll.ScrollRight(bg, screen)
             return world_x - 5
+        
+        # left
         elif self.rect.x <= ((screen.get_width() - self.rect.width) / 2) - 100:
             self.rect.x += 5
+            scroll.ScrollLeft(bg, screen)
             return world_x + 5
         else:
             return world_x
-    def scrollY(self, world_y, screen):
+    def scrollY(self, world_y, screen, bg):
+        # up
         if self.rect.y >= ((screen.get_height() - self.rect.height) / 2) + 100:
             self.rect.y -= 5
+            scroll.ScrollUp(bg, screen)
             return world_y - 5
+        
+        # down
         elif self.rect.y <= ((screen.get_height() - self.rect.height) / 2) - 100:
             self.rect.y += 5
+            scroll.ScrollDown(bg, screen)
             return world_y + 5
         else:
             return world_y
