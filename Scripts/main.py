@@ -30,7 +30,6 @@ backgroundName = 'Tiles'
 
 running = True
 state = 'Running'
-pausePressed = False
 
 while running:
     keys = pygame.key.get_pressed()
@@ -38,16 +37,12 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-
-    if keys[pygame.K_ESCAPE]:
-        if not pausePressed:
-            if state == 'Running':
-                state = 'Paused'
-            elif state == 'Paused':
-                state = 'Running'
-        pausePressed == True
-    else:
-        pausePressed = False
+        elif event.type == pygame.KEYUP:
+            if event.key == pygame.K_ESCAPE:
+                if state == 'Running':
+                    state = 'Paused'
+                elif state == 'Paused':
+                    state = 'Running'
 
     if state == 'Running':
         character.scrollX(world_x, screen, bg)
