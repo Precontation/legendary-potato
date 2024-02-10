@@ -1,7 +1,7 @@
 import pygame
 
-scale = [500, 500]
-backgroundName = 'Tiles'
+scale = [505, 505]
+backgroundName = 'Bubbles'
 
 image = pygame.image.load('Images/Decoration/Background/' + backgroundName + '.png')
 background = pygame.transform.scale(image, scale)

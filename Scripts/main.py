@@ -50,8 +50,6 @@ while running:
         pausePressed = False
 
     if state == 'Running':
-        screen.fill('#d67b34') # temporary until i get the working background
-
         character.scrollX(world_x, screen, bg)
         character.scrollY(world_y, screen, bg)
 
