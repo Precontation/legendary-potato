@@ -76,6 +76,8 @@ while running:
         character.move(keys, character.playerDirection, moveAnimationCycle, idleAnimationCycle)
         screen.blit(character.image, (character.rect.x, character.rect.y))
     elif state == 'Paused':
+        screen.blit(pygame.transform.scale(pygame.image.load('Images/UI/Menus/Pause.png'), (SCREEN_WIDTH, SCREEN_HEIGHT)))
+        
         if keys[pygame.K_SPACE] and keys[pygame.K_r]:
             yes()
         
