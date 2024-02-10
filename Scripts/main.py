@@ -29,49 +29,63 @@ bg.CheckScroll(screen)
 backgroundName = 'Tiles'
 
 running = True
+state = 'Running'
+pausePressed = False
+
 while running:
+    keys = pygame.key.get_pressed()
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
 
-    screen.fill('#d67b34') # temporary until i get the working background
-
-    character.scrollX(world_x, screen, bg)
-    character.scrollY(world_y, screen, bg)
-
-    bgImage = pygame.transform.scale_by(pygame.image.load('Images/Decoration/Background/' + backgroundName + ".png"), 15)
-    bg.ShowBackground(screen)
-    
-    keys = pygame.key.get_pressed()
-
-    if keys[pygame.K_SPACE] and keys[pygame.K_r]:
-        yes()
-
-    if character.checkIfMoving(keys):
-        playerShouldChangeIdleAnim = 1
-        idleAnimationCycle = 1
-        if playerShouldChangeMoveAnim >= playerMoveAnimSpeed:
-            moveAnimationCycle += 1
-            if moveAnimationCycle >= 3:
-                moveAnimationCycle = 1
-            playerShouldChangeMoveAnim = 1
-        else: 
-            playerShouldChangeMoveAnim += 1
+    if keys[pygame.K_ESCAPE]:
+        if not pausePressed:
+            if state == 'Running':
+                state = 'Paused'
+            elif state == 'Paused':
+                state = 'Running'
+        pausePressed == True
     else:
-        playerShouldChangeMoveAnim = 1
-        moveAnimationCycle = 1
+        pausePressed = False
 
-        if playerShouldChangeIdleAnim >= playerIdleAnimSpeed:
-            idleAnimationCycle += 1
-            if idleAnimationCycle >= 3:
-                idleAnimationCycle = 1
+    if state == 'Running':
+        screen.fill('#d67b34') # temporary until i get the working background
+
+        character.scrollX(world_x, screen, bg)
+        character.scrollY(world_y, screen, bg)
+
+        bgImage = pygame.transform.scale_by(pygame.image.load('Images/Decoration/Background/' + backgroundName + ".png"), 15)
+        bg.ShowBackground(screen)
+
+        if character.checkIfMoving(keys):
             playerShouldChangeIdleAnim = 1
-        else: 
-            playerShouldChangeIdleAnim += 1
+            idleAnimationCycle = 1
+            if playerShouldChangeMoveAnim >= playerMoveAnimSpeed:
+                moveAnimationCycle += 1
+                if moveAnimationCycle >= 3:
+                    moveAnimationCycle = 1
+                playerShouldChangeMoveAnim = 1
+            else: 
+                playerShouldChangeMoveAnim += 1
+        else:
+            playerShouldChangeMoveAnim = 1
+            moveAnimationCycle = 1
 
-    character.move(keys, character.playerDirection, moveAnimationCycle, idleAnimationCycle)
-    screen.blit(character.image, (character.rect.x, character.rect.y))
+            if playerShouldChangeIdleAnim >= playerIdleAnimSpeed:
+                idleAnimationCycle += 1
+                if idleAnimationCycle >= 3:
+                    idleAnimationCycle = 1
+                playerShouldChangeIdleAnim = 1
+            else: 
+                playerShouldChangeIdleAnim += 1
 
+        character.move(keys, character.playerDirection, moveAnimationCycle, idleAnimationCycle)
+        screen.blit(character.image, (character.rect.x, character.rect.y))
+    elif state == 'Paused':
+        if keys[pygame.K_SPACE] and keys[pygame.K_r]:
+            yes()
+        
     pygame.display.flip()
     pygame.time.Clock().tick(60) / 1000
 pygame.quit()

@@ -1,7 +1,9 @@
 import pygame
 
 scale = [500, 500]
-image = pygame.image.load('Images/Decoration/Background/Tiles.png')
+backgroundName = 'Tiles'
+
+image = pygame.image.load('Images/Decoration/Background/' + backgroundName + '.png')
 background = pygame.transform.scale(image, scale)
 
 class Background():
