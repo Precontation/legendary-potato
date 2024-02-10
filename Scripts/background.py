@@ -1,50 +1,50 @@
 import pygame
 
-background = pygame.transform.scale_by(pygame.image.load('Images/Decoration/Background/Tiles.png'), 15)
+scale = [500, 500]
+image = pygame.image.load('Images/Decoration/Background/Tiles.png')
+background = pygame.transform.scale(image, scale)
 
 class Background():
 
-    bgMidRect = [250, 250]
-    bgLeftRect = [0, 250]
-    bgRightRect = [500, 250]
-    bgUpRect = [250, 500]
-    bgDownRect = [250, 0]
+    def __init__(self, screen) -> None:
+        self.bgMidRect = [screen.get_width() / 2, screen.get_height() / 2]
+        self.bgLeftRect = [0, screen.get_height() / 2]
+        self.bgRightRect = [screen.get_width(), screen.get_height() / 2]
+        self.bgUpRect = [screen.get_width() / 2, 0]
+        self.bgDownRect = [screen.get_width() / 2, screen.get_height()]
+        self.bgTopRightRect = [screen.get_width(), 0]
+        self.bgTopLeftRect = [0, 0]
+        self.bgBottomRightRect = [screen.get_width(), screen.get_height()]
+        self.bgbottomLeftRect = [0, screen.get_height()]
+        self.rects = [self.bgMidRect, self.bgLeftRect, self.bgRightRect, self.bgUpRect, self.bgDownRect, self.bgTopRightRect, self.bgTopLeftRect, self.bgBottomRightRect, self.bgbottomLeftRect]
 
-    def init(self, screen):
-        bgMidRect = [screen.get_size()[0] / background.get_size()[0], screen.get_size()[1] / background.get_size()[1]]
-        bgLeftRect = [screen.get_size()[0], screen.get_size()[1] / background.get_size()[1]]
-        bgRightRect = [-screen.get_size()[0] / background.get_size()[0], screen.get_size()[1] / background.get_size()[1]]
-        bgUpRect = [screen.get_size()[0] / background.get_size()[0], screen.get_size()[1]]
-        bgDownRect = [screen.get_size()[0], -screen.get_size()[1]]
+    def CheckScroll(self, screen):
+        for rect in self.rects:
+            if rect[0] < ((-screen.get_width())):
+                rect[0] = screen.get_width()
+            elif rect[0] > ((screen.get_width())):
+                rect[0] = -screen.get_width()
+            if rect[1] < ((-screen.get_height())):
+                rect[1] = screen.get_height()
+            elif rect[1] > ((screen.get_height())):
+                rect[1] = -screen.get_height()
 
     def ScrollRight(self):
-        self.bgMidRect[0] -= 5
-        self.bgLeftRect[0] -= 5
-        self.bgRightRect[0] -= 5
-        self.bgUpRect[0] -= 5
-        self.bgDownRect[0] -= 5
-        print('scroll right')
+        for rect in self.rects:
+            rect[0] -= 5
     
     def ScrollLeft(self):
-        self.bgMidRect[0] += 5
-        self.bgLeftRect[0] += 5
-        self.bgRightRect[0] += 5
-        self.bgUpRect[0] += 5
-        self.bgDownRect[0] += 5
-        print('scroll left')
-    
+        for rect in self.rects:
+            rect[0] += 5
+
     def ScrollUp(self):
-        self.bgMidRect[1] -= 5
-        self.bgLeftRect[1] -= 5
-        self.bgRightRect[1] -= 5
-        self.bgUpRect[1] -= 5
-        self.bgDownRect[1] -= 5
-        print('scroll up')
-    
+        for rect in self.rects:
+            rect[1] -= 5
+
     def ScrollDown(self):
-        self.bgMidRect[1] += 5
-        self.bgLeftRect[1] += 5
-        self.bgRightRect[1] += 5
-        self.bgUpRect[1] += 5
-        self.bgDownRect[1] += 5
-        print('scroll down')
+        for rect in self.rects:
+            rect[1] += 5
+
+    def ShowBackground(self, screen):
+        for rect in self.rects:
+            screen.blit(background, rect)
