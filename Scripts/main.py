@@ -32,9 +32,9 @@ state = 'Running'
 
 # test
 font = pygame.font.Font('Fonts/PotatoFont-Regular.ttf', 32)
-text = font.render('QWERTOPASDFGHJKLZXCVBNM', True, (0, 255, 0))
+text = font.render('Legendary Potato!', True, (255, 255, 0))
 textRect = text.get_rect()
-textRect.center = (250, 250)
+textRect.center = (250, 400)
 # end test (delete when done)
 
 while running:

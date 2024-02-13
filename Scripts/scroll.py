@@ -1,19 +1,19 @@
-def ScrollRight(bg, screen):
-    bg.ScrollRight()
+def ScrollRight(bg, screen, scrollAmount):
+    bg.ScrollRight(scrollAmount)
     bg.CheckScroll(screen)
     # this is where you put other enemmies, items, blocks, etc
     
-def ScrollLeft(bg, screen):
-    bg.ScrollLeft()
+def ScrollLeft(bg, screen, scrollAmount):
+    bg.ScrollLeft(scrollAmount)
     bg.CheckScroll(screen)
     # this is where you put other enemmies, items, blocks, etc
 
-def ScrollUp(bg, screen):
-    bg.ScrollUp()
+def ScrollUp(bg, screen, scrollAmount):
+    bg.ScrollUp(scrollAmount)
     bg.CheckScroll(screen)
     # this is where you put other enemmies, items, blocks, etc
 
-def ScrollDown(bg, screen):
-    bg.ScrollDown()
+def ScrollDown(bg, screen, scrollAmount):
+    bg.ScrollDown(scrollAmount)
     bg.CheckScroll(screen)
     # this is where you put other enemmies, items, blocks, etc

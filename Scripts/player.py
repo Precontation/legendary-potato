@@ -16,33 +16,37 @@ class Player(pygame.sprite.Sprite):
         
         self.playerDirection = 'Down'
         self.moveSpeed = 5
+        self.easing = 10 # 10-20 is good (20 smoother, 10 more practical)
 
     def scrollX(self, world_x, screen, bg):
         # right
         if self.rect.x >= self.screenCenterWidth + 100:
-            self.rect.x -= abs(self.rect.x) - abs(screen.get_width() + 100)
-            scroll.ScrollRight(bg, screen)
-            return world_x - abs(self.rect.x) - abs(screen.get_width() + 100)
+            scrollAmount = self.rect.x - (self.screenCenterWidth + 100)
+            self.rect.x -= scrollAmount / self.easing + 1
+            scroll.ScrollRight(bg, screen, scrollAmount / self.easing + 1)
+            return scrollAmount
         
         # left
         elif self.rect.x <= self.screenCenterWidth - 100:
-            self.rect.x += abs(self.rect.x) - abs(screen.get_width() + 100)
-            scroll.ScrollLeft(bg, screen)
-            return world_x + abs(self.rect.x) - abs(screen.get_width() + 100)
+            scrollAmount = self.rect.x - (self.screenCenterWidth - 100)
+            self.rect.x -= scrollAmount / self.easing - 1
+            scroll.ScrollLeft(bg, screen, -(scrollAmount / self.easing - 1))
+            return scrollAmount
         else:
             return world_x
     def scrollY(self, world_y, screen, bg):
         # up
-        if self.rect.y >= self.screenCenterHeight + 100:
-            self.rect.y -= abs(self.rect.y) - abs(screen.get_height() + 100)
-            scroll.ScrollUp(bg, screen)
-            return world_y - abs(self.rect.y) - abs(screen.get_height() + 100)
-        
+        if self.rect.y <= self.screenCenterHeight - 100:
+            scrollAmount = self.rect.y - (self.screenCenterHeight - 100)
+            self.rect.y -= scrollAmount / self.easing - 1
+            scroll.ScrollDown(bg, screen, -(scrollAmount / self.easing - 1))
+            return scrollAmount
         # down
-        elif self.rect.y <= self.screenCenterHeight - 100:
-            self.rect.y += abs(self.rect.y) - abs(screen.get_height() + 100)
-            scroll.ScrollDown(bg, screen)
-            return world_y + abs(self.rect.y) - abs(screen.get_height() + 100)
+        elif self.rect.y >= self.screenCenterHeight + 100:
+            scrollAmount = self.rect.y - (self.screenCenterHeight + 100)
+            self.rect.y -= scrollAmount / self.easing + 1
+            scroll.ScrollUp(bg, screen, scrollAmount / self.easing + 1)
+            return scrollAmount
         else:
             return world_y
         

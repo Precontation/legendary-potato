@@ -31,21 +31,21 @@ class Background():
             elif rect[1] > ((screen.get_height())):
                 rect[1] = -screen.get_height()
 
-    def ScrollRight(self):
+    def ScrollRight(self, scrollAmount):
         for rect in self.rects:
-            rect[0] -= 5
+            rect[0] -= scrollAmount
     
-    def ScrollLeft(self):
+    def ScrollLeft(self, scrollAmount):
         for rect in self.rects:
-            rect[0] += 5
+            rect[0] += scrollAmount
 
-    def ScrollUp(self):
+    def ScrollUp(self, scrollAmount):
         for rect in self.rects:
-            rect[1] -= 5
+            rect[1] -= scrollAmount
 
-    def ScrollDown(self):
+    def ScrollDown(self, scrollAmount):
         for rect in self.rects:
-            rect[1] += 5
+            rect[1] += scrollAmount
 
     def ShowBackground(self, screen):
         for rect in self.rects:
