@@ -1,6 +1,5 @@
 import pygame
 import player
-import scroll
 import background
 from amazing import yes
 
@@ -12,7 +11,7 @@ pygame.display.set_caption('Legendary Potato')
 pygame.init()
 
 # player stuff
-character = player.Player()
+character = player.Player(screen)
 moveAnimationCycle = 1
 playerShouldChangeMoveAnim = 1
 playerMoveAnimSpeed = 10
@@ -30,6 +29,13 @@ backgroundName = 'Tiles'
 
 running = True
 state = 'Running'
+
+# test
+font = pygame.font.Font('Fonts/PotatoFont-Regular.ttf', 32)
+text = font.render('QWERTOPASDFGHJKLZXCVBNM', True, (0, 255, 0))
+textRect = text.get_rect()
+textRect.center = (250, 250)
+# end test (delete when done)
 
 while running:
     keys = pygame.key.get_pressed()
@@ -75,12 +81,15 @@ while running:
 
         character.move(keys, character.playerDirection, moveAnimationCycle, idleAnimationCycle)
         screen.blit(character.image, (character.rect.x, character.rect.y))
-    elif state == 'Paused':
-        screen.blit(pygame.transform.scale(pygame.image.load('Images/UI/Menus/Pause.png'), (SCREEN_WIDTH, SCREEN_HEIGHT)))
+
+        screen.blit(text, textRect) # test (delete when done)
         
+    elif state == 'Paused':
+        screen.blit(pygame.transform.scale(pygame.image.load('Images/UI/Menus/Pause.png'), (SCREEN_WIDTH, SCREEN_HEIGHT)), (0, 0))
+
+
         if keys[pygame.K_SPACE] and keys[pygame.K_r]:
             yes()
-        
     pygame.display.flip()
     pygame.time.Clock().tick(60) / 1000
 pygame.quit()

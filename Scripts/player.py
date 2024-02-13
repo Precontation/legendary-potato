@@ -2,39 +2,47 @@ import pygame
 import scroll
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self) -> None:
+    def __init__(self, screen) -> None:
         super().__init__()
+
         self.image = pygame.transform.scale_by(pygame.image.load('Images/Player/Up/Up.png'), 5)
         self.rect = self.image.get_rect()
+        
+        self.screenCenterWidth = (screen.get_width() - self.rect.width) / 2
+        self.screenCenterHeight = (screen.get_height() - self.rect.height) / 2
+
+        self.rect.x = self.screenCenterWidth
+        self.rect.y = self.screenCenterHeight
+        
         self.playerDirection = 'Down'
         self.moveSpeed = 5
 
     def scrollX(self, world_x, screen, bg):
         # right
-        if self.rect.x >= ((screen.get_width() - self.rect.width) / 2) + 100:
-            self.rect.x -= 5
+        if self.rect.x >= self.screenCenterWidth + 100:
+            self.rect.x -= abs(self.rect.x) - abs(screen.get_width() + 100)
             scroll.ScrollRight(bg, screen)
-            return world_x - 5
+            return world_x - abs(self.rect.x) - abs(screen.get_width() + 100)
         
         # left
-        elif self.rect.x <= ((screen.get_width() - self.rect.width) / 2) - 100:
-            self.rect.x += 5
+        elif self.rect.x <= self.screenCenterWidth - 100:
+            self.rect.x += abs(self.rect.x) - abs(screen.get_width() + 100)
             scroll.ScrollLeft(bg, screen)
-            return world_x + 5
+            return world_x + abs(self.rect.x) - abs(screen.get_width() + 100)
         else:
             return world_x
     def scrollY(self, world_y, screen, bg):
         # up
-        if self.rect.y >= ((screen.get_height() - self.rect.height) / 2) + 100:
-            self.rect.y -= 5
+        if self.rect.y >= self.screenCenterHeight + 100:
+            self.rect.y -= abs(self.rect.y) - abs(screen.get_height() + 100)
             scroll.ScrollUp(bg, screen)
-            return world_y - 5
+            return world_y - abs(self.rect.y) - abs(screen.get_height() + 100)
         
         # down
-        elif self.rect.y <= ((screen.get_height() - self.rect.height) / 2) - 100:
-            self.rect.y += 5
+        elif self.rect.y <= self.screenCenterHeight - 100:
+            self.rect.y += abs(self.rect.y) - abs(screen.get_height() + 100)
             scroll.ScrollDown(bg, screen)
-            return world_y + 5
+            return world_y + abs(self.rect.y) - abs(screen.get_height() + 100)
         else:
             return world_y
         
