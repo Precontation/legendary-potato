@@ -15,7 +15,7 @@ class Player(pygame.sprite.Sprite):
         self.rect.y = self.screenCenterHeight
         
         self.playerDirection = 'Down'
-        self.moveSpeed = 5
+        self.moveSpeed = 7
         self.easing = 10 # 10-20 is good (20 smoother, 10 more practical)
 
     def scrollX(self, world_x, screen, bg):

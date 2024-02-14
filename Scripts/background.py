@@ -1,14 +1,15 @@
 import pygame
 
-scale = [505, 505]
-backgroundName = 'Tiles'
-
-image = pygame.image.load('Images/Decoration/Background/' + backgroundName + '.png')
-background = pygame.transform.scale(image, scale)
-
 class Background():
 
+
     def __init__(self, screen) -> None:
+        backgroundName = 'Tiles'
+
+        self.scale = [screen.get_width(), screen.get_height()]
+        self.image = pygame.image.load('Images/Decoration/Background/' + backgroundName + '.png')
+        self.background = pygame.transform.scale(self.image, self.scale)
+        
         self.bgMidRect = [screen.get_width() / 2, screen.get_height() / 2]
         self.bgLeftRect = [0, screen.get_height() / 2]
         self.bgRightRect = [screen.get_width(), screen.get_height() / 2]
@@ -23,13 +24,13 @@ class Background():
     def CheckScroll(self, screen):
         for rect in self.rects:
             if rect[0] < ((-screen.get_width())):
-                rect[0] = screen.get_width()
+                rect[0] += screen.get_width() * 2
             elif rect[0] > ((screen.get_width())):
-                rect[0] = -screen.get_width()
+                rect[0] -= screen.get_width() * 2
             if rect[1] < ((-screen.get_height())):
-                rect[1] = screen.get_height()
+                rect[1] += screen.get_height() * 2
             elif rect[1] > ((screen.get_height())):
-                rect[1] = -screen.get_height()
+                rect[1] -= screen.get_height() * 2
 
     def ScrollRight(self, scrollAmount):
         for rect in self.rects:
@@ -49,4 +50,4 @@ class Background():
 
     def ShowBackground(self, screen):
         for rect in self.rects:
-            screen.blit(background, rect)
+            screen.blit(self.background, rect)

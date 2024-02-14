@@ -30,12 +30,7 @@ backgroundName = 'Tiles'
 running = True
 state = 'Running'
 
-# test
-font = pygame.font.Font('Fonts/PotatoFont-Regular.ttf', 32)
-text = font.render('Legendary Potato!', True, (255, 255, 0))
-textRect = text.get_rect()
-textRect.center = (250, 400)
-# end test (delete when done)
+font = pygame.font.Font('Fonts/PotatoFont-Regular.ttf', 75)
 
 while running:
     keys = pygame.key.get_pressed()
@@ -81,12 +76,32 @@ while running:
 
         character.move(keys, character.playerDirection, moveAnimationCycle, idleAnimationCycle)
         screen.blit(character.image, (character.rect.x, character.rect.y))
-
-        screen.blit(text, textRect) # test (delete when done)
         
     elif state == 'Paused':
         screen.blit(pygame.transform.scale(pygame.image.load('Images/UI/Menus/Pause.png'), (SCREEN_WIDTH, SCREEN_HEIGHT)), (0, 0))
+        
+        pauseText = font.render('PAUSED', True, 'black', None)
+        textRect = pauseText.get_rect()
+        textRect.center = (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 5)
+        screen.blit(pauseText, textRect)
 
+        resumeText = font.render('Resume', True, 'black', None)
+        settingsText = font.render('Settings', True, 'black', None)
+        quitText = font.render('Quit', True, 'black', None)
+
+        buttonPath = 'Images/UI/Buttons/Pause Button/'
+        resumeButton = pygame.transform.scale(pygame.image.load(buttonPath + 'Unclicked.png'), (190, 100))
+        settingsButton = pygame.transform.scale(pygame.image.load(buttonPath + 'Unclicked.png'), (190, 100))
+        quitButton = pygame.transform.scale(pygame.image.load(buttonPath + 'Unclicked.png'), (190, 100))
+
+        screen.blit(resumeButton, ((SCREEN_WIDTH - resumeButton.get_width()) / 2 , SCREEN_HEIGHT / 3.5))
+        screen.blit(resumeText, ((SCREEN_WIDTH - resumeButton.get_width()) / 2 , SCREEN_HEIGHT / 3.5))
+
+        screen.blit(settingsButton, ((SCREEN_WIDTH - settingsButton.get_width()) / 2, SCREEN_HEIGHT / 2))
+        screen.blit(settingsText, ((SCREEN_WIDTH - settingsButton.get_width()) / 2, SCREEN_HEIGHT / 2))
+
+        screen.blit(quitButton, ((SCREEN_WIDTH - quitButton.get_width()) / 2, SCREEN_HEIGHT / 1.4))
+        screen.blit(quitText, ((SCREEN_WIDTH - quitButton.get_width()) / 2, SCREEN_HEIGHT / 1.4))
 
         if keys[pygame.K_SPACE] and keys[pygame.K_r]:
             yes()
