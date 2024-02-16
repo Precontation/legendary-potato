@@ -1,6 +1,7 @@
 import pygame
 import player
 import background
+import pauseScreen
 from amazing import yes
 
 # setup stuff
@@ -27,10 +28,17 @@ bg = background.Background(screen)
 bg.CheckScroll(screen)
 backgroundName = 'Tiles'
 
+# pause screen stuff
+font = pygame.font.Font('Fonts/PotatoFont-Regular.ttf', 75)
+
+resume = pauseScreen.PauseButton('Resume', SCREEN_WIDTH, SCREEN_HEIGHT / 3.5, font)
+settings = pauseScreen.PauseButton('Settings', SCREEN_WIDTH, SCREEN_HEIGHT / 2, font)
+quit = pauseScreen.PauseButton('Quit', SCREEN_WIDTH, SCREEN_HEIGHT / 1.4, font)
+buttons = pauseScreen.Group(resume, settings, quit)
+buttons.add(resume, settings, quit)
+
 running = True
 state = 'Running'
-
-font = pygame.font.Font('Fonts/PotatoFont-Regular.ttf', 75)
 
 while running:
     keys = pygame.key.get_pressed()
@@ -78,30 +86,11 @@ while running:
         screen.blit(character.image, (character.rect.x, character.rect.y))
         
     elif state == 'Paused':
+        image = pygame.image.load('Images/UI/Buttons/Pause Button/Unclicked.png')
         screen.blit(pygame.transform.scale(pygame.image.load('Images/UI/Menus/Pause.png'), (SCREEN_WIDTH, SCREEN_HEIGHT)), (0, 0))
         
-        pauseText = font.render('PAUSED', True, 'black', None)
-        textRect = pauseText.get_rect()
-        textRect.center = (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 5)
-        screen.blit(pauseText, textRect)
-
-        resumeText = font.render('Resume', True, 'black', None)
-        settingsText = font.render('Settings', True, 'black', None)
-        quitText = font.render('Quit', True, 'black', None)
-
-        buttonPath = 'Images/UI/Buttons/Pause Button/'
-        resumeButton = pygame.transform.scale(pygame.image.load(buttonPath + 'Unclicked.png'), (190, 100))
-        settingsButton = pygame.transform.scale(pygame.image.load(buttonPath + 'Unclicked.png'), (190, 100))
-        quitButton = pygame.transform.scale(pygame.image.load(buttonPath + 'Unclicked.png'), (190, 100))
-
-        screen.blit(resumeButton, ((SCREEN_WIDTH - resumeButton.get_width()) / 2 , SCREEN_HEIGHT / 3.5))
-        screen.blit(resumeText, ((SCREEN_WIDTH - resumeButton.get_width()) / 2 , SCREEN_HEIGHT / 3.5))
-
-        screen.blit(settingsButton, ((SCREEN_WIDTH - settingsButton.get_width()) / 2, SCREEN_HEIGHT / 2))
-        screen.blit(settingsText, ((SCREEN_WIDTH - settingsButton.get_width()) / 2, SCREEN_HEIGHT / 2))
-
-        screen.blit(quitButton, ((SCREEN_WIDTH - quitButton.get_width()) / 2, SCREEN_HEIGHT / 1.4))
-        screen.blit(quitText, ((SCREEN_WIDTH - quitButton.get_width()) / 2, SCREEN_HEIGHT / 1.4))
+        buttons.blit(screen)
+        buttons.checkForClick(pygame.event.get())
 
         if keys[pygame.K_SPACE] and keys[pygame.K_r]:
             yes()
