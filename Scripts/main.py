@@ -58,7 +58,7 @@ while running:
         bg.ShowBackground(screen)
 
         character.doAnimStuff(keys)
-        character.move(keys, character.playerDirection, idleAnimationCycle)
+        character.move(keys, character.direction, idleAnimationCycle)
         screen.blit(character.image, (character.rect.x, character.rect.y))
         
     elif state == 'Paused':
