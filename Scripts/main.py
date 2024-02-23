@@ -12,10 +12,7 @@ pygame.display.set_caption('Legendary Potato')
 pygame.init()
 
 # player stuff
-character = player.Player(screen)
-moveAnimationCycle = 1
-playerShouldChangeMoveAnim = 1
-playerMoveAnimSpeed = 10
+character = player.Player(screen, 10, 3)
 
 idleAnimationCycle = 1
 playerShouldChangeIdleAnim = 1
@@ -60,29 +57,8 @@ while running:
         bgImage = pygame.transform.scale_by(pygame.image.load('Images/Decoration/Background/' + backgroundName + ".png"), 15)
         bg.ShowBackground(screen)
 
-        if character.checkIfMoving(keys):
-            playerShouldChangeIdleAnim = 1
-            idleAnimationCycle = 1
-            if playerShouldChangeMoveAnim >= playerMoveAnimSpeed:
-                moveAnimationCycle += 1
-                if moveAnimationCycle >= 3:
-                    moveAnimationCycle = 1
-                playerShouldChangeMoveAnim = 1
-            else: 
-                playerShouldChangeMoveAnim += 1
-        else:
-            playerShouldChangeMoveAnim = 1
-            moveAnimationCycle = 1
-
-            if playerShouldChangeIdleAnim >= playerIdleAnimSpeed:
-                idleAnimationCycle += 1
-                if idleAnimationCycle >= 3:
-                    idleAnimationCycle = 1
-                playerShouldChangeIdleAnim = 1
-            else: 
-                playerShouldChangeIdleAnim += 1
-
-        character.move(keys, character.playerDirection, moveAnimationCycle, idleAnimationCycle)
+        character.doAnimStuff(keys)
+        character.move(keys, character.playerDirection, idleAnimationCycle)
         screen.blit(character.image, (character.rect.x, character.rect.y))
         
     elif state == 'Paused':
