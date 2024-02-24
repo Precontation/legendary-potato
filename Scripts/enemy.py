@@ -1,6 +1,13 @@
 import pygame
+from random import randint
 
-class Enemy(pygame.sprite.Sprite):
+
+def create(enemyID, screen):
+    if enemyID == 1:
+        slime = Slime(screen)
+        return slime
+
+class EnemyTemplate(pygame.sprite.Sprite):
     def __init__(self, screen, animSpeed, animLimit, image, moveSpeed) -> None:
         super().__init__()
 
@@ -18,8 +25,8 @@ class Enemy(pygame.sprite.Sprite):
         
         self.isMoving = False
 
-        self.screenCenterWidth = (screen.get_width() - self.rect.width) / 2
-        self.screenCenterHeight = (screen.get_height() - self.rect.height) / 2
+        self.screenCenterWidth = randint(0, screen.get_width() - self.rect.width)
+        self.screenCenterHeight = randint(0, screen.get_height() - self.rect.height)
 
         self.rect.x = self.screenCenterWidth
         self.rect.y = self.screenCenterHeight
@@ -65,25 +72,25 @@ class Enemy(pygame.sprite.Sprite):
             self.image = pygame.transform.scale_by(pygame.image.load('Images/Enemies/' + self.imageName + '/Idle' + str(self.idleAnimationCycle) + '.png'), 5)
 
 class Slime(pygame.sprite.Sprite):
-    def __init__(self, screen, animSpeed, animLimit, moveSpeed) -> None:
+    def __init__(self, screen) -> None:
         super().__init__()
 
         self.image = pygame.transform.scale_by(pygame.image.load('Images/Enemies/Slime/Slime.png'), 5)
 
         self.rect = self.image.get_rect()
 
-        self.animSpeed = animSpeed
-        self.animLimit = animLimit
+        self.animSpeed = 2
+        self.animLimit = 9
         self.animationCycle = 1
         self.shouldChangeAnim = 1
 
-        self.screenCenterWidth = (screen.get_width() - self.rect.width) / 2
-        self.screenCenterHeight = (screen.get_height() - self.rect.height) / 2
+        self.screenCenterWidth = randint(0, screen.get_width() - self.rect.width)
+        self.screenCenterHeight = randint(0, screen.get_height() - self.rect.height)
 
         self.rect.x = self.screenCenterWidth
         self.rect.y = self.screenCenterHeight
 
-        self.moveSpeed = moveSpeed
+        self.moveSpeed = 0.05
 
     def ScrollRight(self, scrollAmount):
         self.rect.x -= scrollAmount
