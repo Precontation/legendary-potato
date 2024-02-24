@@ -25,40 +25,40 @@ class Player(pygame.sprite.Sprite):
         self.moveSpeed = 7
         self.easing = 10 # 10-20 is good (20 smoother, 10 more practical)
 
-    def scrollX(self, world_x, screen, bg):
+    def scrollX(self, world_x, screen, bg, enemy):
         # right
         if self.rect.x >= self.screenCenterWidth + 100:
             scrollAmount = self.rect.x - (self.screenCenterWidth + 100)
             self.rect.x -= scrollAmount / self.easing + 1
-            scroll.ScrollRight(bg, screen, scrollAmount / self.easing + 1)
+            scroll.ScrollRight(bg, enemy, screen, scrollAmount / self.easing + 1)
             return scrollAmount
         
         # left
         elif self.rect.x <= self.screenCenterWidth - 100:
             scrollAmount = self.rect.x - (self.screenCenterWidth - 100)
             self.rect.x -= scrollAmount / self.easing - 1
-            scroll.ScrollLeft(bg, screen, -(scrollAmount / self.easing - 1))
+            scroll.ScrollLeft(bg, enemy, screen, -(scrollAmount / self.easing - 1))
             return scrollAmount
         else:
             return world_x
-    def scrollY(self, world_y, screen, bg):
+    def scrollY(self, world_y, screen, bg, enemy):
         # up
         if self.rect.y <= self.screenCenterHeight - 100:
             scrollAmount = self.rect.y - (self.screenCenterHeight - 100)
             self.rect.y -= scrollAmount / self.easing - 1
-            scroll.ScrollDown(bg, screen, -(scrollAmount / self.easing - 1))
+            scroll.ScrollDown(bg, enemy, screen, -(scrollAmount / self.easing - 1))
             return scrollAmount
         # down
         elif self.rect.y >= self.screenCenterHeight + 100:
             scrollAmount = self.rect.y - (self.screenCenterHeight + 100)
             self.rect.y -= scrollAmount / self.easing + 1
-            scroll.ScrollUp(bg, screen, scrollAmount / self.easing + 1)
+            scroll.ScrollUp(bg, enemy, screen, scrollAmount / self.easing + 1)
             return scrollAmount
         else:
             return world_y
         
-    def move(self, keys, playerDirection, idleAnimationCycle):
-        oldPlayerDir = playerDirection
+    def move(self, keys):
+        oldPlayerDir = self.direction
         hasHeldX = False
         hasHeldY = False
         hasMoved = False
@@ -87,13 +87,14 @@ class Player(pygame.sprite.Sprite):
             self.direction = oldPlayerDir
             hasHeldY = True
         if not keys[pygame.K_w] and not keys[pygame.K_UP] and not keys[pygame.K_a] and not keys [pygame.K_LEFT] and not keys[pygame.K_s] and not keys[pygame.K_DOWN] and not keys[pygame.K_d] and not keys[pygame.K_RIGHT]:
-            self.image = pygame.transform.scale_by(pygame.image.load('Images/Player/' + playerDirection + '/Idle' + str(self.idleAnimationCycle) + '.png'), 5)
+            self.image = pygame.transform.scale_by(pygame.image.load('Images/Player/' + self.direction + '/Idle' + str(self.idleAnimationCycle) + '.png'), 5)
         else:
             if not hasHeldX and not hasHeldY and hasMoved:
-                self.image = pygame.transform.scale_by(pygame.image.load('Images/Player/' + playerDirection + '/Moving' + str(self.moveAnimationCycle) + '.png'), 5)
+                self.image = pygame.transform.scale_by(pygame.image.load('Images/Player/' + self.direction + '/Moving' + str(self.moveAnimationCycle) + '.png'), 5)
             else:
-                self.image = pygame.transform.scale_by(pygame.image.load('Images/Player/' + playerDirection + '/Idle' + str(self.idleAnimationCycle) + '.png'), 5)
-        return playerDirection
+                self.image = pygame.transform.scale_by(pygame.image.load('Images/Player/' + self.direction + '/Idle' + str(self.idleAnimationCycle) + '.png'), 5)
+        self.doAnimStuff(keys)
+        return self.direction
     
     def doAnimStuff(self, keys):
         if self.checkIfMoving(keys):
@@ -101,7 +102,7 @@ class Player(pygame.sprite.Sprite):
             self.idleAnimationCycle = 1
             if self.shouldChangeMoveAnim >= self.animSpeed:
                 self.moveAnimationCycle += 1
-                if self.moveAnimationCycle >= 3:
+                if self.moveAnimationCycle >= self.animLimit:
                     self.moveAnimationCycle = 1
                 self.shouldChangeMoveAnim = 1
             else: 
@@ -112,7 +113,7 @@ class Player(pygame.sprite.Sprite):
 
             if self.shouldChangeIdleAnim >= self.animSpeed:
                 self.idleAnimationCycle += 1
-                if self.idleAnimationCycle >= 3:
+                if self.idleAnimationCycle >= self.animLimit:
                     self.idleAnimationCycle = 1
                 self.shouldChangeIdleAnim = 1
             else: 

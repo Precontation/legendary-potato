@@ -2,6 +2,7 @@ import pygame
 import player
 import background
 import pauseScreen
+import enemy
 from amazing import yes
 
 # setup stuff
@@ -17,6 +18,8 @@ character = player.Player(screen, 10, 3)
 idleAnimationCycle = 1
 playerShouldChangeIdleAnim = 1
 playerIdleAnimSpeed = 10  #5 or 10
+
+testEnemy = enemy.Slime(screen, 2, 9, 0.05)
 
 # moving around stuff
 world_x = 0
@@ -51,15 +54,17 @@ while running:
                     state = 'Running'
 
     if state == 'Running':
-        character.scrollX(world_x, screen, bg)
-        character.scrollY(world_y, screen, bg)
+        character.scrollX(world_x, screen, bg, testEnemy)
+        character.scrollY(world_y, screen, bg, testEnemy)
 
         bgImage = pygame.transform.scale_by(pygame.image.load('Images/Decoration/Background/' + backgroundName + ".png"), 15)
         bg.ShowBackground(screen)
 
-        character.doAnimStuff(keys)
-        character.move(keys, character.direction, idleAnimationCycle)
-        screen.blit(character.image, (character.rect.x, character.rect.y))
+        testEnemy.move(character)
+        screen.blit(testEnemy.image, testEnemy.rect)
+
+        character.move(keys)
+        screen.blit(character.image, character.rect)
         
     elif state == 'Paused':
         image = pygame.image.load('Images/UI/Buttons/Pause Button/Unclicked.png')

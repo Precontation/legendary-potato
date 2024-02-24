@@ -1,8 +1,6 @@
 import pygame
 
 class Background():
-
-
     def __init__(self, screen) -> None:
         backgroundName = 'Tiles'
 
