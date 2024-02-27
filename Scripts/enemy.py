@@ -4,10 +4,14 @@ from random import randint
 
 def create(enemyID, screen):
     if enemyID == 1:
-        slime = Slime(screen)
-        return slime
+        enemy = DirectionlessEnemy(screen, "Slime", 2, 9, 0.05)
+    elif enemyID == 2:
+        enemy = DirectionlessEnemy(screen, "Wou", 2, 10, 0.02)
+    elif enemyID == 3:
+        enemy = RotationEnemy(screen, "Clyve", 5, 2, 0.1)
+    return enemy
 
-class EnemyTemplate(pygame.sprite.Sprite):
+class DirectionalEnemy(pygame.sprite.Sprite):
     def __init__(self, screen, animSpeed, animLimit, image, moveSpeed) -> None:
         super().__init__()
 
@@ -17,7 +21,7 @@ class EnemyTemplate(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
 
         self.animSpeed = animSpeed
-        self.animLimit = animLimit
+        self.animLimit = animLimit + 0.1
         self.moveAnimationCycle = 1
         self.idleAnimationCycle = 1
         self.shouldChangeMoveAnim = 1
@@ -71,16 +75,17 @@ class EnemyTemplate(pygame.sprite.Sprite):
                 self.shouldChangeIdleAnim += 1
             self.image = pygame.transform.scale_by(pygame.image.load('Images/Enemies/' + self.imageName + '/Idle' + str(self.idleAnimationCycle) + '.png'), 5)
 
-class Slime(pygame.sprite.Sprite):
-    def __init__(self, screen) -> None:
+class DirectionlessEnemy(pygame.sprite.Sprite):
+    def __init__(self, screen, enemyType, animSpeed, animLimit, moveSpeed) -> None:
         super().__init__()
 
-        self.image = pygame.transform.scale_by(pygame.image.load('Images/Enemies/Slime/Slime.png'), 5)
+        self.enemyType = enemyType
+        self.image = pygame.transform.scale_by(pygame.image.load('Images/Enemies/' + enemyType + '/0.png'), 5)
 
         self.rect = self.image.get_rect()
 
-        self.animSpeed = 2
-        self.animLimit = 9
+        self.animSpeed = animSpeed
+        self.animLimit = animLimit + 0.1
         self.animationCycle = 1
         self.shouldChangeAnim = 1
 
@@ -90,7 +95,7 @@ class Slime(pygame.sprite.Sprite):
         self.rect.x = self.screenCenterWidth
         self.rect.y = self.screenCenterHeight
 
-        self.moveSpeed = 0.05
+        self.moveSpeed = moveSpeed
 
     def ScrollRight(self, scrollAmount):
         self.rect.x -= scrollAmount
@@ -112,10 +117,62 @@ class Slime(pygame.sprite.Sprite):
             self.shouldChangeAnim = 1
         else: 
             self.shouldChangeAnim += 1
-        self.image = pygame.transform.scale_by(pygame.image.load('Images/Enemies/Slime/'+ str(self.animationCycle) + '.png'), 5)
+        self.image = pygame.transform.scale_by(pygame.image.load('Images/Enemies/' + self.enemyType + "/" + str(self.animationCycle) + '.png'), 5)
     
     def move(self, player):
-        dirvect = pygame.math.Vector2((player.rect.centerx - self.rect.x) * self.moveSpeed, (player.rect.centery - self.rect.y) * self.moveSpeed)
+        dirvect = pygame.math.Vector2((player.rect.centerx - self.rect.centerx) * self.moveSpeed, (player.rect.centery - self.rect.centery) * self.moveSpeed)
         dirvect.normalize()
         self.rect.move_ip(dirvect)
         self.doAnimStuff()
+
+class RotationEnemy(pygame.sprite.Sprite):
+    def __init__(self, screen, enemyType, animSpeed, animLimit, moveSpeed) -> None:
+        super().__init__()
+
+        self.enemyType = enemyType
+        self.image = pygame.transform.scale_by(pygame.image.load('Images/Enemies/' + enemyType + '/0.png'), 5)
+
+        self.rect = self.image.get_rect()
+
+        self.animSpeed = animSpeed
+        self.animLimit = animLimit + 0.1
+        self.animationCycle = 1
+        self.shouldChangeAnim = 1
+
+        self.screenCenterWidth = randint(0, screen.get_width() - self.rect.width)
+        self.screenCenterHeight = randint(0, screen.get_height() - self.rect.height)
+
+        self.rect.x = self.screenCenterWidth
+        self.rect.y = self.screenCenterHeight
+
+        self.moveSpeed = moveSpeed
+
+    def ScrollRight(self, scrollAmount):
+        self.rect.x -= scrollAmount
+    
+    def ScrollLeft(self, scrollAmount):
+        self.rect.x += scrollAmount
+
+    def ScrollUp(self, scrollAmount):
+        self.rect.y -= scrollAmount
+
+    def ScrollDown(self, scrollAmount):
+        self.rect.y += scrollAmount
+    
+    def doAnimStuff(self, dirvect):
+        if self.shouldChangeAnim >= self.animSpeed:
+            self.animationCycle += 1
+            if self.animationCycle >= self.animLimit:
+                self.animationCycle = 1
+            self.shouldChangeAnim = 1
+        else: 
+            self.shouldChangeAnim += 1
+        self.image = pygame.transform.scale_by(pygame.image.load('Images/Enemies/' + self.enemyType + "/" + str(self.animationCycle) + '.png'), 5)
+        
+        self.image = pygame.transform.rotate(self.image, dirvect)
+    
+    def move(self, player):
+        dirvect = pygame.math.Vector2((player.rect.centerx - self.rect.centerx) * self.moveSpeed, (player.rect.centery - self.rect.centery) * self.moveSpeed)
+        dirvect.normalize()
+        self.rect.move_ip(dirvect)
+        self.doAnimStuff(dirvect.angle_to((player.rect.x, player.rect.y)))

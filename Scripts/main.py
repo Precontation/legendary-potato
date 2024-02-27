@@ -19,7 +19,7 @@ idleAnimationCycle = 1
 playerShouldChangeIdleAnim = 1
 playerIdleAnimSpeed = 10  #5 or 10
 
-manager = enemyManager.EnemyManager(screen, 1)
+manager = enemyManager.EnemyManager(screen, 3)
 
 # moving around stuff
 world_x = 0
