@@ -1,7 +1,6 @@
 import pygame
 from random import randint
 
-
 def create(enemyID, screen):
     if enemyID == 1:
         enemy = DirectionlessEnemy(screen, "Slime", 2, 9, 0.05)
