@@ -16,6 +16,7 @@ class EnemyManager():
     def move(self, player):
         for enemy in self.sprites:
             enemy.move(player)
+    
     def blit(self, screen):
         for enemy in self.sprites:
             screen.blit(enemy.image, enemy.rect)
@@ -32,3 +33,8 @@ class EnemyManager():
     def ScrollDown(self, scrollAmount):
         for enemy in self.sprites:
             enemy.ScrollDown(scrollAmount)
+    def checkIfHit(self, player):
+        amountHit = 0
+        for enemy in self.sprites:
+            amountHit += enemy.checkIfHitPlayer(player)
+        return amountHit

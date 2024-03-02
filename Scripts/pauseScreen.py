@@ -30,25 +30,31 @@ class PauseButton(pygame.sprite.Sprite):
         screen.blit(self.image, self.rect)
         screen.blit(self.text, self.rect)
     
-    def checkForClick(self, events):
+    def checkForClick(self, event, state):
         self.buttonPressed = False
-        for event in events:
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if self.rect.collidepoint(event.pos):
-                    print('Clicked')
-                    self.clicked = True
-                    self.buttonPressed = True
-            elif event.type == pygame.MOUSEBUTTONUP:
-                self.clicked = False
-                if self.buttonPressed:
-                    print(self.button)
+
+        if self.rect.collidepoint(event.pos):
+                print('Clicked')
+                self.buttonPressed = True
+        elif event.type == pygame.MOUSEBUTTONUP:
+            if self.buttonPressed:
+                self.buttonPressed = False
+                if self.button == "Resume":
+                    state = "Running"
+                elif self.button == "Settings":
+                    state = "Settings"
+                elif self.button == "Quit":
+                    state = 'QUIT'
+        return state
 
 class Group(pygame.sprite.Group):
     def blit(self, screen):
         # Do something to all the sprites in the group
         for sprite in self.sprites():
             sprite.blit(screen)
-    def checkForClick(self, events):
+        
+    def checkForClicks(self, event, state):
         # Do something to all the sprites in the group
         for sprite in self.sprites():
-            sprite.checkForClick(events)
+            state = sprite.checkForClick(event, state)
+        return state

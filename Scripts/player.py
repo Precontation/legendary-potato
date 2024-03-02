@@ -2,7 +2,7 @@ import pygame
 import scroll
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, screen, animSpeed, animLimit) -> None:
+    def __init__(self, screen, animSpeed, animLimit, health) -> None:
         super().__init__()
 
         self.image = pygame.transform.scale_by(pygame.image.load('Images/Player/Up/Up.png'), 5)
@@ -17,6 +17,8 @@ class Player(pygame.sprite.Sprite):
 
         self.screenCenterWidth = (screen.get_width() - self.rect.width) / 2
         self.screenCenterHeight = (screen.get_height() - self.rect.height) / 2
+
+        self.health = health
 
         self.rect.x = self.screenCenterWidth
         self.rect.y = self.screenCenterHeight
