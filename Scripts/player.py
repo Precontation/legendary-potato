@@ -15,6 +15,8 @@ class Player(pygame.sprite.Sprite):
         self.shouldChangeMoveAnim = 1
         self.shouldChangeIdleAnim = 1
 
+        self.weaponType = "Sword"
+
         self.screenCenterWidth = (screen.get_width() - self.rect.width) / 2
         self.screenCenterHeight = (screen.get_height() - self.rect.height) / 2
 

@@ -3,12 +3,20 @@ import enemy
 from random import randint
 
 class EnemyManager():
-    def __init__(self, screen, maxEnemies) -> None:
+    def __init__(self, screen, maxEnemyTypes, maxEnemies, spawnTime) -> None:
         self.sprites = pygame.sprite.Group()
-        for sprite in range(randint(1, 4)):
-            spriteID = randint(1, maxEnemies)
-            self.create(spriteID, screen)
-
+        self.spawnTime = spawnTime * 1000
+        self.shouldSpawn = spawnTime
+        self.spawnEnemies(screen, maxEnemyTypes, maxEnemies)
+         
+    def spawnEnemies(self, screen, maxEnemyTypes, maxEnemies):
+        # if self.shouldSpawn >= self.spawnTime:
+            for sprite in range(randint(1, maxEnemies)):
+                spriteID = randint(1, maxEnemyTypes)
+                self.create(spriteID, screen)
+            # self.shouldSpawn = 1
+        # else :
+            # self.shouldSpawn += 1
     def create(self, enemyID, screen):
         newEnemy = enemy.create(enemyID, screen)
         self.sprites.add(newEnemy)
