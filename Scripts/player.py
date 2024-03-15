@@ -29,6 +29,9 @@ class Player(pygame.sprite.Sprite):
         self.moveSpeed = 7
         self.easing = 10 # 10-20 is good (20 smoother, 10 more practical)
 
+        self.attacking = ""
+        self.attackingCycle = ""
+
     def scrollX(self, world_x, screen, bg, enemy):
         # right
         if self.rect.x >= self.screenCenterWidth + 100:
@@ -91,12 +94,12 @@ class Player(pygame.sprite.Sprite):
             self.direction = oldPlayerDir
             hasHeldY = True
         if not keys[pygame.K_w] and not keys[pygame.K_UP] and not keys[pygame.K_a] and not keys [pygame.K_LEFT] and not keys[pygame.K_s] and not keys[pygame.K_DOWN] and not keys[pygame.K_d] and not keys[pygame.K_RIGHT]:
-            self.image = pygame.transform.scale_by(pygame.image.load('Images/Player/' + self.direction + '/Idle' + str(self.idleAnimationCycle) + '.png'), 5)
+            self.image = pygame.transform.scale_by(pygame.image.load('Images/Player/' + self.direction + '/Idle' + str(self.idleAnimationCycle) + self.attacking + self.attackingCycle + '.png'), 5)
         else:
             if not hasHeldX and not hasHeldY and hasMoved:
-                self.image = pygame.transform.scale_by(pygame.image.load('Images/Player/' + self.direction + '/Moving' + str(self.moveAnimationCycle) + '.png'), 5)
+                self.image = pygame.transform.scale_by(pygame.image.load('Images/Player/' + self.direction + '/Moving' + str(self.moveAnimationCycle) + self.attacking + self.attackingCycle + '.png'), 5)
             else:
-                self.image = pygame.transform.scale_by(pygame.image.load('Images/Player/' + self.direction + '/Idle' + str(self.idleAnimationCycle) + '.png'), 5)
+                self.image = pygame.transform.scale_by(pygame.image.load('Images/Player/' + self.direction + '/Idle' + str(self.idleAnimationCycle) + self.attacking + self.attackingCycle + '.png'), 5)
         self.doAnimStuff(keys)
         return self.direction
     

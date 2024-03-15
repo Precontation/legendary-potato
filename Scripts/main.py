@@ -19,7 +19,7 @@ idleAnimationCycle = 1
 playerShouldChangeIdleAnim = 1
 playerIdleAnimSpeed = 10  #5 or 10
 
-manager = enemyManager.EnemyManager(screen, 4, 4, 10)
+manager = enemyManager.EnemyManager(screen, 5, 4, 10)
 
 # moving around stuff
 world_x = 0
@@ -42,8 +42,9 @@ state = 'Running'
 
 while running:
     keys = pygame.key.get_pressed()
+    events = pygame.event.get()
 
-    for event in pygame.event.get():
+    for event in events:
         if event.type == pygame.QUIT:
             running = False
         elif event.type == pygame.KEYUP:
@@ -64,6 +65,7 @@ while running:
         manager.move(character)
         manager.blit(screen)
         character.health -= manager.checkIfHit(character)
+        if character.health < 0: character.health = 0
         screen.blit(font.render("Health: " + str(round(character.health)), 1, 'black', None), (25, SCREEN_HEIGHT / 1.3)) # temporary
         if character.health <= 0:
             state = "QUIT" # temporary
@@ -75,7 +77,7 @@ while running:
         image = pygame.image.load('Images/UI/Buttons/Pause Button/Unclicked.png')
         screen.blit(pygame.transform.scale(pygame.image.load('Images/UI/Menus/Pause.png'), (SCREEN_WIDTH, SCREEN_HEIGHT)), (0, 0))
         
-        for event in pygame.event.get(pygame.MOUSEBUTTONDOWN):
+        for event in events:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 buttons.checkForClicks(event, state)
         

@@ -10,6 +10,8 @@ def create(enemyID, screen):
         enemy = RotationEnemy(screen, "Clyve", 5, 2, 0.05, 1)
     elif enemyID == 4:
         enemy = DirectionalEnemy(screen, 15, 2, "Ligila", 0.01, 1)
+    elif enemyID == 5:
+        enemy = DirectionlessEnemy(screen, "Puddle Of Health", 15, 3, 0.00001, -0.1)
     return enemy
 
 class DirectionalEnemy(pygame.sprite.Sprite):
