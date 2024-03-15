@@ -61,6 +61,7 @@ while running:
         bgImage = pygame.transform.scale_by(pygame.image.load('Images/Decoration/Background/' + backgroundName + ".png"), 15)
         bg.ShowBackground(screen)
 
+        character.attack(keys)
         character.move(keys)
         manager.move(character)
         manager.blit(screen)

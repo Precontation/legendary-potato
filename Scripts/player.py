@@ -1,3 +1,4 @@
+from typing import Any
 import pygame
 import scroll
 
@@ -5,7 +6,7 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, screen, animSpeed, animLimit, health) -> None:
         super().__init__()
 
-        self.image = pygame.transform.scale_by(pygame.image.load('Images/Player/Up/Up.png'), 5)
+        self.image = pygame.transform.scale_by(pygame.image.load('Images/Player/Up/Idle1.png'), 5)
         self.rect = self.image.get_rect()
 
         self.animSpeed = animSpeed
@@ -31,6 +32,30 @@ class Player(pygame.sprite.Sprite):
 
         self.attacking = ""
         self.attackingCycle = ""
+        self.shouldChangeAttackingCycle = 0
+        self.hasPressedSpace = False
+        
+    def attack(self, keys):
+        if self.attacking == "":
+            self.shouldChangeAttackingCycle = 0
+            if keys[pygame.K_SPACE]:
+                if not self.hasPressedSpace:
+                        self.hasPressedSpace = True
+                        self.attacking = "Attacking"
+                        self.attackingCycle = 1
+            else:
+                self.hasPressedSpace = False
+        else:
+            if self.shouldChangeAttackingCycle >= 5:
+                self.shouldChangeAttackingCycle = 0
+                self.attackingCycle += 1
+                if self.attackingCycle == 3:
+                    self.attacking = ""
+                    self.attackingCycle = 0
+                if self.attackingCycle == 0:
+                    self.attackingCycle = ""
+            else:
+                self.shouldChangeAttackingCycle += 1
 
     def scrollX(self, world_x, screen, bg, enemy):
         # right
@@ -94,12 +119,12 @@ class Player(pygame.sprite.Sprite):
             self.direction = oldPlayerDir
             hasHeldY = True
         if not keys[pygame.K_w] and not keys[pygame.K_UP] and not keys[pygame.K_a] and not keys [pygame.K_LEFT] and not keys[pygame.K_s] and not keys[pygame.K_DOWN] and not keys[pygame.K_d] and not keys[pygame.K_RIGHT]:
-            self.image = pygame.transform.scale_by(pygame.image.load('Images/Player/' + self.direction + '/Idle' + str(self.idleAnimationCycle) + self.attacking + self.attackingCycle + '.png'), 5)
+            self.image = pygame.transform.scale_by(pygame.image.load('Images/Player/' + self.direction + '/Idle' + str(self.idleAnimationCycle) + self.attacking + str(self.attackingCycle) + '.png'), 5)
         else:
             if not hasHeldX and not hasHeldY and hasMoved:
-                self.image = pygame.transform.scale_by(pygame.image.load('Images/Player/' + self.direction + '/Moving' + str(self.moveAnimationCycle) + self.attacking + self.attackingCycle + '.png'), 5)
+              self.image = pygame.transform.scale_by(pygame.image.load('Images/Player/' + self.direction + '/Moving' + str(self.moveAnimationCycle) + self.attacking + str(self.attackingCycle) + '.png'), 5)
             else:
-                self.image = pygame.transform.scale_by(pygame.image.load('Images/Player/' + self.direction + '/Idle' + str(self.idleAnimationCycle) + self.attacking + self.attackingCycle + '.png'), 5)
+                self.image = pygame.transform.scale_by(pygame.image.load('Images/Player/' + self.direction + '/Idle' + str(self.idleAnimationCycle) + self.attacking + str(self.attackingCycle) + '.png'), 5)
         self.doAnimStuff(keys)
         return self.direction
     
