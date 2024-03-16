@@ -3,15 +3,15 @@ from random import randint
 
 def create(enemyID, screen):
     if enemyID == 1:
-        enemy = DirectionlessEnemy(screen, "Slime", 2, 9, 0.05, 0.1)
+        enemy = DirectionlessEnemy(screen, "Slime", 2, 10, 0.05, 0.1)
     elif enemyID == 2:
-        enemy = DirectionlessEnemy(screen, "Wou", 2, 10, 0.02, 0.3)
+        enemy = DirectionlessEnemy(screen, "Wou", 2, 11, 0.02, 0.3)
     elif enemyID == 3:
         enemy = RotationEnemy(screen, "Clyve", 5, 2, 0.05, 1)
     elif enemyID == 4:
         enemy = DirectionalEnemy(screen, 15, 2, "Ligila", 0.01, 1)
     elif enemyID == 5:
-        enemy = DirectionlessEnemy(screen, "Puddle Of Health", 15, 3, 0.00001, -0.1)
+        enemy = DirectionlessEnemy(screen, "Puddle Of Health", 15, 4, 0.00001, -0.1)
     return enemy
 
 class DirectionalEnemy(pygame.sprite.Sprite):

@@ -20,7 +20,7 @@ idleAnimationCycle = 1
 playerShouldChangeIdleAnim = 1
 playerIdleAnimSpeed = 10  #5 or 10
 
-manager = enemyManager.EnemyManager(screen, 5, 1, 10)
+manager = enemyManager.EnemyManager(screen, 5, 10, 500)
 
 # moving around stuff
 world_x = 0
@@ -65,6 +65,7 @@ while running:
         character.move(keys)
         manager.move(character)
         manager.blit(screen)
+        manager.spawnEnemies(screen)
         character.health -= manager.checkIfHit(character)
         if character.health < 0: character.health = 0
         screen.blit(font.render("Health: " + str(round(character.health)), 1, 'black', None), (25, SCREEN_HEIGHT / 1.3)) # temporary
