@@ -10,6 +10,7 @@ SCREEN_WIDTH = 500
 SCREEN_HEIGHT = 500
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption('Legendary Potato')
+pygame.display.set_icon(pygame.image.load("Images/UI/Logo.png"))
 pygame.init()
 
 # player stuff
@@ -19,7 +20,7 @@ idleAnimationCycle = 1
 playerShouldChangeIdleAnim = 1
 playerIdleAnimSpeed = 10  #5 or 10
 
-manager = enemyManager.EnemyManager(screen, 5, 4, 10)
+manager = enemyManager.EnemyManager(screen, 5, 1 , 10)
 
 # moving around stuff
 world_x = 0
