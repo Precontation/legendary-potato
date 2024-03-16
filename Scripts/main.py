@@ -20,7 +20,7 @@ idleAnimationCycle = 1
 playerShouldChangeIdleAnim = 1
 playerIdleAnimSpeed = 10  #5 or 10
 
-manager = enemyManager.EnemyManager(screen, 5, 1 , 10)
+manager = enemyManager.EnemyManager(screen, 5, 1, 10)
 
 # moving around stuff
 world_x = 0
@@ -32,11 +32,10 @@ backgroundName = 'Tiles'
 # pause screen stuff
 font = pygame.font.Font('Fonts/PotatoFont-Regular.otf', 75)
 
-resume = pauseScreen.PauseButton('Resume', SCREEN_WIDTH, SCREEN_HEIGHT / 3.5, font)
-settings = pauseScreen.PauseButton('Settings', SCREEN_WIDTH, SCREEN_HEIGHT / 2, font)
-quit = pauseScreen.PauseButton('Quit', SCREEN_WIDTH, SCREEN_HEIGHT / 1.4, font)
+resume = pauseScreen.PauseButton('Running', 'Resume', SCREEN_WIDTH, SCREEN_HEIGHT / 3.5, font)
+settings = pauseScreen.PauseButton('Settings', 'Settings', SCREEN_WIDTH, SCREEN_HEIGHT / 2, font)
+quit = pauseScreen.PauseButton('Quit', 'Quit', SCREEN_WIDTH, SCREEN_HEIGHT / 1.4, font)
 buttons = pauseScreen.Group(resume, settings, quit)
-buttons.add(resume, settings, quit)
 
 running = True
 state = 'Running'
@@ -70,7 +69,7 @@ while running:
         if character.health < 0: character.health = 0
         screen.blit(font.render("Health: " + str(round(character.health)), 1, 'black', None), (25, SCREEN_HEIGHT / 1.3)) # temporary
         if character.health <= 0:
-            state = "QUIT" # temporary
+            state = "Quit" # temporary
 
 
         screen.blit(character.image, character.rect)
@@ -78,16 +77,15 @@ while running:
     elif state == 'Paused':
         image = pygame.image.load('Images/UI/Buttons/Pause Button/Unclicked.png')
         screen.blit(pygame.transform.scale(pygame.image.load('Images/UI/Menus/Pause.png'), (SCREEN_WIDTH, SCREEN_HEIGHT)), (0, 0))
-        
-        for event in events:
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                buttons.checkForClicks(event, state)
-        
+
+        state = buttons.checkForClicks(events, state)
         buttons.blit(screen)
 
         if keys[pygame.K_SPACE] and keys[pygame.K_r]:
             yes()
-    elif state == 'QUIT':
+    elif state == 'Settings':
+        state = 'Paused' # temporary
+    elif state == 'Quit':
         running = False
     
     pygame.display.flip()
