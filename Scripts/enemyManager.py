@@ -8,6 +8,7 @@ class EnemyManager():
         self.spawnTime = spawnTime * 1000
         self.maxEnemyTypes = maxEnemyTypes
         self.maxEnemies = maxEnemies
+        self.amountOfEnemies = 0
         self.spawnTime = spawnTime
         self.shouldSpawn = spawnTime
         self.spawnEnemies(screen)
@@ -18,6 +19,7 @@ class EnemyManager():
             for sprite in range(randint(1, self.maxEnemies)):
                 spriteID = randint(1, self.maxEnemyTypes)
                 self.create(spriteID, screen)
+                self.amountOfEnemies += 1
             self.shouldSpawn = 1
         else :
             self.shouldSpawn += 1
@@ -50,3 +52,7 @@ class EnemyManager():
         for enemy in self.sprites:
             amountHit += enemy.checkIfHitPlayer(player)
         return amountHit
+    
+    def checkAttack(self, player):
+        for enemy in self.sprites:
+            enemy.checkAttack(player)

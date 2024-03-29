@@ -1,6 +1,7 @@
 from typing import Any
 import pygame
 import scroll
+import projectile
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, screen, animSpeed, animLimit, health) -> None:
@@ -16,8 +17,10 @@ class Player(pygame.sprite.Sprite):
         self.shouldChangeMoveAnim = 1
         self.shouldChangeIdleAnim = 1
 
-        self.weaponType = "Sword"
-
+        self.projectiles = pygame.sprite.Group()
+        self.weaponType = "Dagger"
+        self.damage = 10
+        
         self.screenCenterWidth = (screen.get_width() - self.rect.width) / 2
         self.screenCenterHeight = (screen.get_height() - self.rect.height) / 2
 
@@ -29,20 +32,29 @@ class Player(pygame.sprite.Sprite):
         self.direction = 'Down'
         self.moveSpeed = 7
         self.easing = 10 # 10-20 is good (20 smoother, 10 more practical)
-
+        
         self.attacking = ""
         self.attackingCycle = ""
         self.shouldChangeAttackingCycle = 0
         self.hasPressedSpace = False
-        
-    def attack(self, keys):
+    
+    def throw(self):
+        newDagger = projectile.Dagger(self.damage, self)
+        self.projectiles.add(newDagger)
+
+    def attack(self, keys, enemyManager):
         if self.attacking == "":
             self.shouldChangeAttackingCycle = 0
             if keys[pygame.K_SPACE]:
                 if not self.hasPressedSpace:
                         self.hasPressedSpace = True
-                        self.attacking = "Attacking"
+                        if self.weaponType == "Sword":
+                            # TODO: sword is REALLY bad right now, so at least give a graphic
+                            enemyManager.checkAttack(self)
+                        elif self.weaponType == "Dagger":
+                            self.throw()
                         self.attackingCycle = 1
+                        self.attacking = "Attacking"
             else:
                 self.hasPressedSpace = False
         else:
@@ -50,6 +62,11 @@ class Player(pygame.sprite.Sprite):
                 self.shouldChangeAttackingCycle = 0
                 self.attackingCycle += 1
                 if self.attackingCycle == 3:
+                    self.idleAnimationCycle = 2
+                    self.moveAnimationCycle = 1
+                    self.shouldChangeIdleAnim = 1
+                    self.shouldChangeMoveAnim = 1
+
                     self.attacking = ""
                     self.attackingCycle = 0
                 if self.attackingCycle == 0:
@@ -58,38 +75,34 @@ class Player(pygame.sprite.Sprite):
                 self.shouldChangeAttackingCycle += 1
 
     def scrollX(self, world_x, screen, bg, enemy):
+        newX = world_x
         # right
         if self.rect.x >= self.screenCenterWidth + 100:
             scrollAmount = self.rect.x - (self.screenCenterWidth + 100)
             self.rect.x -= scrollAmount / self.easing + 1
-            scroll.ScrollRight(bg, enemy, screen, scrollAmount / self.easing + 1)
-            return scrollAmount
+            newX = scroll.ScrollRight(bg, enemy, screen, scrollAmount / self.easing + 1, world_x, self.projectiles)
         
         # left
         elif self.rect.x <= self.screenCenterWidth - 100:
             scrollAmount = self.rect.x - (self.screenCenterWidth - 100)
             self.rect.x -= scrollAmount / self.easing - 1
-            scroll.ScrollLeft(bg, enemy, screen, -(scrollAmount / self.easing - 1))
-            return scrollAmount
-        else:
-            return world_x
+            newX = scroll.ScrollLeft(bg, enemy, screen, -(scrollAmount / self.easing - 1), world_x, self.projectiles)
+        return newX
     def scrollY(self, world_y, screen, bg, enemy):
+        newY = world_y
         # up
         if self.rect.y <= self.screenCenterHeight - 100:
             scrollAmount = self.rect.y - (self.screenCenterHeight - 100)
             self.rect.y -= scrollAmount / self.easing - 1
-            scroll.ScrollDown(bg, enemy, screen, -(scrollAmount / self.easing - 1))
-            return scrollAmount
+            newY = scroll.ScrollDown(bg, enemy, screen, -(scrollAmount / self.easing - 1), world_y, self.projectiles)
         # down
         elif self.rect.y >= self.screenCenterHeight + 100:
             scrollAmount = self.rect.y - (self.screenCenterHeight + 100)
             self.rect.y -= scrollAmount / self.easing + 1
-            scroll.ScrollUp(bg, enemy, screen, scrollAmount / self.easing + 1)
-            return scrollAmount
-        else:
-            return world_y
+            newY = scroll.ScrollUp(bg, enemy, screen, scrollAmount / self.easing + 1, world_y, self.projectiles)
+        return newY
         
-    def move(self, keys):
+    def move(self, keys, screen, enemyManager):
         oldPlayerDir = self.direction
         hasHeldX = False
         hasHeldY = False
@@ -131,10 +144,13 @@ class Player(pygame.sprite.Sprite):
               self.image = pygame.transform.scale_by(pygame.image.load('Images/Player/' + self.direction + '/Moving' + str(self.moveAnimationCycle) + self.attacking + str(self.attackingCycle) + '.png'), 5)
             else:
                 self.image = pygame.transform.scale_by(pygame.image.load('Images/Player/' + self.direction + '/Idle' + str(self.idleAnimationCycle) + self.attacking + str(self.attackingCycle) + '.png'), 5)
-        self.doAnimStuff(keys)
+        self.doAnimStuff(keys, screen, enemyManager)
         return self.direction
     
-    def doAnimStuff(self, keys):
+    def doAnimStuff(self, keys, screen, enemyManager):
+        for projectile in self.projectiles:
+            projectile.move(screen, enemyManager)
+
         if self.checkIfMoving(keys):
             self.shouldChangeIdleAnim = 1
             self.idleAnimationCycle = 1

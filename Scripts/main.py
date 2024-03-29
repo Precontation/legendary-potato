@@ -6,15 +6,15 @@ import enemyManager
 from amazing import yes
 
 # setup stuff
+pygame.init()
+pygame.display.set_caption('Legendary Potato')
+pygame.display.set_icon(pygame.image.load("Images/UI/Logo.png"))
 SCREEN_WIDTH = 500
 SCREEN_HEIGHT = 500
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption('Legendary Potato')
-pygame.display.set_icon(pygame.image.load("Images/UI/Logo.png"))
-pygame.init()
 
 # player stuff
-character = player.Player(screen, 10, 3, 100)
+character = player.Player(screen, 10, 3, 10000000)
 
 idleAnimationCycle = 1
 playerShouldChangeIdleAnim = 1
@@ -55,14 +55,14 @@ while running:
                     state = 'Running'
 
     if state == 'Running':
-        character.scrollX(world_x, screen, bg, manager)
-        character.scrollY(world_y, screen, bg, manager)
+        world_x = character.scrollX(world_x, screen, bg, manager)
+        world_y = character.scrollY(world_y, screen, bg, manager)
 
         bgImage = pygame.transform.scale_by(pygame.image.load('Images/Decoration/Background/' + backgroundName + ".png"), 15)
         bg.ShowBackground(screen)
 
-        character.attack(keys)
-        character.move(keys)
+        character.attack(keys, manager)
+        character.move(keys, screen, manager)
         manager.move(character)
         manager.blit(screen)
         manager.spawnEnemies(screen)
@@ -78,7 +78,7 @@ while running:
     elif state == 'Paused':
         image = pygame.image.load('Images/UI/Buttons/Pause Button/Unclicked.png')
         screen.blit(pygame.transform.scale(pygame.image.load('Images/UI/Menus/Pause.png'), (SCREEN_WIDTH, SCREEN_HEIGHT)), (0, 0))
-
+ 
         state = buttons.checkForClicks(events, state)
         buttons.blit(screen)
 
@@ -88,7 +88,7 @@ while running:
         state = 'Paused' # temporary
     elif state == 'Quit':
         running = False
-    
+        
     pygame.display.flip()
     pygame.time.Clock().tick(60) / 1000
 pygame.quit()
