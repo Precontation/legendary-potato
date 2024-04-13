@@ -70,14 +70,15 @@ class DirectionalEnemy(pygame.sprite.Sprite):
             self.shouldChangeAnim += 1
         self.image = pygame.transform.scale_by(pygame.image.load('Images/Enemies/' + self.imageName + '/' + self.direction + str(self.animationCycle) + '.png'), 5)
     
-    def takeDamage(self, amount):
+    def takeDamage(self, amount, player):
         self.health -= amount
         if self.health <= 0:
+            player.kills += 1
             self.kill()
 
     def checkAttack(self, player):
         if self.rect.colliderect(player.rect):
-            self.takeDamage(player.damage)
+            self.takeDamage(player.damage, player)
 
     def checkIfHitPlayer(self, player):
         if self.rect.colliderect(player.rect):
@@ -136,14 +137,15 @@ class DirectionlessEnemy(pygame.sprite.Sprite):
             self.shouldChangeAnim += 1
         self.image = pygame.transform.scale_by(pygame.image.load('Images/Enemies/' + self.enemyType + "/" + str(self.animationCycle) + '.png'), 5)
     
-    def takeDamage(self, amount):
+    def takeDamage(self, amount, player):
         self.health -= amount
         if self.health <= 0:
+            player.kills += 1
             self.kill()
 
     def checkAttack(self, player):
         if self.rect.colliderect(player.rect):
-            self.takeDamage(player.damage)
+            self.takeDamage(player.damage, player)
 
     def checkIfHitPlayer(self, player):
         if self.rect.colliderect(player.rect):
@@ -208,14 +210,15 @@ class RotationEnemy(pygame.sprite.Sprite):
         
         self.image = pygame.transform.rotate(self.original_image, angle)
 
-    def takeDamage(self, amount):
+    def takeDamage(self, amount, player):
         self.health -= amount
         if self.health <= 0:
+            player.kills += 1
             self.kill()
             
     def checkAttack(self, player):
         if self.rect.colliderect(player.rect):
-            self.takeDamage(player.damage)
+            self.takeDamage(player.damage, player)
     
     def checkIfHitPlayer(self, player):
         if self.rect.colliderect(player.rect):

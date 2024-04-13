@@ -18,13 +18,14 @@ class Player(pygame.sprite.Sprite):
         self.shouldChangeIdleAnim = 1
 
         self.projectiles = pygame.sprite.Group()
-        self.weaponType = "Dagger"
+        self.weaponType = "Old Dagger"
         self.damage = 10
         
         self.screenCenterWidth = (screen.get_width() - self.rect.width) / 2
         self.screenCenterHeight = (screen.get_height() - self.rect.height) / 2
 
         self.health = health
+        self.kills = 0
 
         self.rect.x = self.screenCenterWidth
         self.rect.y = self.screenCenterHeight
@@ -52,6 +53,8 @@ class Player(pygame.sprite.Sprite):
                             # TODO: sword is REALLY bad right now, so at least give a graphic
                             enemyManager.checkAttack(self)
                         elif self.weaponType == "Dagger":
+                            self.throw()
+                        elif self.weaponType == "Old Dagger":
                             self.throw()
                         self.attackingCycle = 1
                         self.attacking = "Attacking"
@@ -149,7 +152,7 @@ class Player(pygame.sprite.Sprite):
     
     def doAnimStuff(self, keys, screen, enemyManager):
         for projectile in self.projectiles:
-            projectile.move(screen, enemyManager)
+            projectile.move(screen, enemyManager, self)
 
         if self.checkIfMoving(keys):
             self.shouldChangeIdleAnim = 1

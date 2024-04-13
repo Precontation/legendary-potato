@@ -14,7 +14,7 @@ SCREEN_HEIGHT = 500
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 # player stuff
-character = player.Player(screen, 10, 3, 10000000)
+character = player.Player(screen, 10, 3, 100)
 
 idleAnimationCycle = 1
 playerShouldChangeIdleAnim = 1
@@ -60,7 +60,7 @@ while running:
 
         bgImage = pygame.transform.scale_by(pygame.image.load('Images/Decoration/Background/' + backgroundName + ".png"), 15)
         bg.ShowBackground(screen)
-
+    
         character.attack(keys, manager)
         character.move(keys, screen, manager)
         manager.move(character)
@@ -69,6 +69,7 @@ while running:
         character.health -= manager.checkIfHit(character)
         if character.health < 0: character.health = 0
         screen.blit(font.render("Health: " + str(round(character.health)), 1, 'black', None), (25, SCREEN_HEIGHT / 1.3)) # temporary
+        screen.blit(font.render("Kills: " + str(round(character.kills)), 1, 'black', None), (25, 10)) # temporary
         if character.health <= 0:
             state = "Quit" # temporary
 

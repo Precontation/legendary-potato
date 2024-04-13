@@ -6,9 +6,9 @@ class Dagger(pygame.sprite.Sprite):
     def __init__(self, damage, player) -> None:
         super().__init__()
 
-        self.speed = 5
+        self.speed = 10
 
-        self.original_image = pygame.transform.scale_by(pygame.image.load("Images/Projectiles/Dagger.png"), 3)
+        self.original_image = pygame.transform.scale_by(pygame.image.load("Images/Projectiles/" + player.weaponType + ".png"), 3)
         self.image = self.original_image
         self.rect = self.image.get_rect()
         self.rect.center = player.rect.center
@@ -26,13 +26,13 @@ class Dagger(pygame.sprite.Sprite):
         
         self.damage = damage
 
-    def move(self, screen, enemies):
+    def move(self, screen, enemies, player):
         self.rect.x += self.mouse_x * self.speed
         self.rect.y += self.mouse_y * self.speed
 
         for enemy in enemies.sprites:
             if self.rect.colliderect(enemy.rect):
-                enemy.takeDamage(self.damage)
+                enemy.takeDamage(self.damage, player)
                 self.kill()
 
         if self.rect.colliderect(screen.get_rect()):
