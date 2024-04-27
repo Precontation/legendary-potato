@@ -4,15 +4,15 @@ from random import randint
 
 def create(enemyID, screen):
     if enemyID == 1:
-        enemy = DirectionlessEnemy(screen, "Slime", 2, 10, 0.05, 0.1, 10)
+        enemy = DirectionlessEnemy(screen, 'Slime', 2, 10, 0.05, 0.1, 10)
     elif enemyID == 2:
-        enemy = DirectionlessEnemy(screen, "Wou", 2, 11, 0.02, 0.3, 15)
+        enemy = DirectionlessEnemy(screen, 'Wou', 2, 11, 0.02, 0.3, 15)
     elif enemyID == 3:
-        enemy = RotationEnemy(screen, "Clyve", 5, 2, 0.05, 1, 25)
+        enemy = RotationEnemy(screen, 'Clyve', 5, 2, 0.05, 1, 25)
     elif enemyID == 4:
-        enemy = DirectionalEnemy(screen, 15, 2, "Ligila", 0.01, 1, 100)
+        enemy = DirectionalEnemy(screen, 15, 2, 'Ligila', 0.01, 1, 100)
     elif enemyID == 5:
-        enemy = DirectionlessEnemy(screen, "Puddle Of Health", 15, 4, 0.00001, -0.1, 1)
+        enemy = DirectionlessEnemy(screen, 'Puddle Of Health', 15, 4, 0.00001, -0.1, 1)
     return enemy
 
 class DirectionalEnemy(pygame.sprite.Sprite):
@@ -64,14 +64,18 @@ class DirectionalEnemy(pygame.sprite.Sprite):
         self.rect.y += scrollAmount
     
     def doAnimStuff(self, dirvect):
+        print(dirvect)
+
         if dirvect.y < 0:
-            self.direction = "Up"
-        elif dirvect.y > 0:
-            self.direction = "Down"
-        if dirvect.x > 0 and dirvect.x > dirvect.y:
-            self.direction = "Right"
-        elif dirvect.x < 0:
-            self.direction = "Left"
+            self.direction = 'Up'
+        elif dirvect.y >= 0:
+            self.direction = 'Down'
+        if abs(dirvect.x) > abs(dirvect.y):
+            if dirvect.x > 0:
+                self.direction = 'Right'
+                print('right')
+            elif dirvect.x <= 0:
+                self.direction = 'Left'
 
         if self.shouldChangeAnim >= self.animSpeed:
             self.animationCycle += 1
@@ -80,6 +84,7 @@ class DirectionalEnemy(pygame.sprite.Sprite):
                 self.animationCycle = 1
         else: 
             self.shouldChangeAnim += 1
+
         self.image = pygame.transform.scale_by(pygame.image.load('Images/Enemies/' + self.imageName + '/' + self.direction + str(self.animationCycle) + '.png'), 5)
     
     def takeDamage(self, amount, player, velocity):
@@ -160,7 +165,7 @@ class DirectionlessEnemy(pygame.sprite.Sprite):
             self.shouldChangeAnim = 1
         else: 
             self.shouldChangeAnim += 1
-        self.image = pygame.transform.scale_by(pygame.image.load('Images/Enemies/' + self.enemyType + "/" + str(self.animationCycle) + '.png'), 5)
+        self.image = pygame.transform.scale_by(pygame.image.load('Images/Enemies/' + self.enemyType + '/' + str(self.animationCycle) + '.png'), 5)
     
     def takeDamage(self, amount, player, velocity):
         self.health -= amount
@@ -241,7 +246,7 @@ class RotationEnemy(pygame.sprite.Sprite):
             self.shouldChangeAnim = 1
         else: 
             self.shouldChangeAnim += 1
-        self.image = pygame.transform.scale_by(pygame.image.load('Images/Enemies/' + self.enemyType + "/" + str(self.animationCycle) + '.png'), 5)
+        self.image = pygame.transform.scale_by(pygame.image.load('Images/Enemies/' + self.enemyType + '/' + str(self.animationCycle) + '.png'), 5)
         
         playerX, playerY = player.rect.center
         angle = math.degrees(-math.atan2(playerY - self.rect.y, playerX - self.rect.x)) - 90

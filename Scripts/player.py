@@ -18,7 +18,7 @@ class Player(pygame.sprite.Sprite):
         self.shouldChangeIdleAnim = 1
 
         self.projectiles = pygame.sprite.Group()
-        self.weaponType = "Dagger"
+        self.weaponType = 'Dagger'
         self.damage = 10
         
         self.screenCenterWidth = (screen.get_width() - self.rect.width) / 2
@@ -34,8 +34,8 @@ class Player(pygame.sprite.Sprite):
         self.moveSpeed = 7
         self.easing = 10 # 10-20 is good (20 smoother, 10 more practical)
         
-        self.attacking = ""
-        self.attackingCycle = ""
+        self.attacking = ''
+        self.attackingCycle = ''
         self.shouldChangeAttackingCycle = 0
         self.hasPressedSpace = False
     
@@ -44,20 +44,20 @@ class Player(pygame.sprite.Sprite):
         self.projectiles.add(newDagger)
 
     def attack(self, keys, enemyManager):
-        if self.attacking == "":
+        if self.attacking == '':
             self.shouldChangeAttackingCycle = 0
             if keys[pygame.K_SPACE]:
                 if not self.hasPressedSpace:
                         self.hasPressedSpace = True
-                        if self.weaponType == "Sword":
+                        if self.weaponType == 'Sword':
                             # TODO: sword is REALLY bad right now, so at least give a graphic
                             enemyManager.checkAttack(self)
-                        elif self.weaponType == "Dagger":
+                        elif self.weaponType == 'Dagger':
                             self.throw()
-                        elif self.weaponType == "Old Dagger":
+                        elif self.weaponType == 'Old Dagger':
                             self.throw()
                         self.attackingCycle = 1
-                        self.attacking = "Attacking"
+                        self.attacking = 'Attacking'
             else:
                 self.hasPressedSpace = False
         else:
@@ -70,10 +70,10 @@ class Player(pygame.sprite.Sprite):
                     self.shouldChangeIdleAnim = 1
                     self.shouldChangeMoveAnim = 1
 
-                    self.attacking = ""
+                    self.attacking = ''
                     self.attackingCycle = 0
                 if self.attackingCycle == 0:
-                    self.attackingCycle = ""
+                    self.attackingCycle = ''
             else:
                 self.shouldChangeAttackingCycle += 1
 

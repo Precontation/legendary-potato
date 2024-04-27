@@ -8,7 +8,7 @@ class Dagger(pygame.sprite.Sprite):
 
         self.speed = 10
 
-        self.original_image = pygame.transform.scale_by(pygame.image.load("Images/Projectiles/" + player.weaponType + ".png"), 3)
+        self.original_image = pygame.transform.scale_by(pygame.image.load('Images/Projectiles/' + player.weaponType + '.png'), 3)
         self.image = self.original_image
         self.rect = self.image.get_rect()
         self.rect.center = player.rect.center
