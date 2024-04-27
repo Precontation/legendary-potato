@@ -2,10 +2,10 @@ import pygame
 
 class Background():
     def __init__(self, screen) -> None:
-        backgroundName = 'Bubbles'
+        self.backgroundName = 'Bubbles'
 
         self.scale = [screen.get_width(), screen.get_height()]
-        self.image = pygame.image.load('Images/Decoration/Background/' + backgroundName + '.png')
+        self.image = pygame.image.load('Images/Decoration/Background/' + self.backgroundName + '.png')
         self.background = pygame.transform.scale(self.image, self.scale)
         
         self.bgMidRect = [screen.get_width() / 2, screen.get_height() / 2]

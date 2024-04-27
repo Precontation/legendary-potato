@@ -1,5 +1,6 @@
 import pygame
 import math
+from random import randint
 
 def create(enemyID, screen):
     if enemyID == 1:
@@ -33,9 +34,20 @@ class DirectionalEnemy(pygame.sprite.Sprite):
         self.damage = damage
         self.isMoving = False
 
-        self.rect.x = screen.get_width()
-        self.rect.y = screen.get_height()
-        
+        pos = randint(0, 4)
+        if pos == 0: # right
+            self.rect.x = screen.get_width() + 100
+            self.rect.y = randint(0, screen.get_height())
+        elif pos == 2: # left
+            self.rect.x = -100
+            self.rect.y = randint(0, screen.get_height())
+        elif pos == 3: # up
+            self.rect.y = -100
+            self.rect.x = randint(0, screen.get_width())
+        else: # down
+            self.rect.y = screen.get_height() + 100
+            self.rect.x = randint(0, screen.get_width())
+
         self.direction = 'Down'
         self.moveSpeed = moveSpeed
 
@@ -112,8 +124,19 @@ class DirectionlessEnemy(pygame.sprite.Sprite):
 
         self.damage = damage
 
-        self.rect.x = screen.get_width()
-        self.rect.y = screen.get_height()
+        pos = randint(0, 4)
+        if pos == 0: # right
+            self.rect.x = screen.get_width() + 100
+            self.rect.y = randint(0, screen.get_height())
+        elif pos == 2: # left
+            self.rect.x = -100
+            self.rect.y = randint(0, screen.get_height())
+        elif pos == 3: # up
+            self.rect.y = -100
+            self.rect.x = randint(0, screen.get_width())
+        else: # down
+            self.rect.y = screen.get_height() + 100
+            self.rect.x = randint(0, screen.get_width())
 
         self.moveSpeed = moveSpeed
 
@@ -182,8 +205,19 @@ class RotationEnemy(pygame.sprite.Sprite):
 
         self.damage = damage
 
-        self.rect.x = screen.get_width()
-        self.rect.y = screen.get_height()
+        pos = randint(0, 4)
+        if pos == 0: # right
+            self.rect.x = screen.get_width() + 100
+            self.rect.y = randint(0, screen.get_height())
+        elif pos == 2: # left
+            self.rect.x = -100
+            self.rect.y = randint(0, screen.get_height())
+        elif pos == 3: # up
+            self.rect.y = -100
+            self.rect.x = randint(0, screen.get_width())
+        else: # down
+            self.rect.y = screen.get_height() + 100
+            self.rect.x = randint(0, screen.get_width())
         
         self.moveSpeed = moveSpeed
 

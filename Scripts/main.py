@@ -14,13 +14,13 @@ SCREEN_HEIGHT = 500
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 # player stuff
-character = player.Player(screen, 10, 3, 100000)
+character = player.Player(screen, 10, 3, 100)
 
 idleAnimationCycle = 1
 playerShouldChangeIdleAnim = 1
 playerIdleAnimSpeed = 10  #5 or 10
 
-manager = enemyManager.EnemyManager(screen, 5, 10, 500)
+manager = enemyManager.EnemyManager(screen, 5, 100)
 
 # moving around stuff
 world_x = 0
@@ -77,8 +77,8 @@ while running:
         screen.blit(character.image, character.rect)
         
     elif state == 'Paused':
-        image = pygame.image.load('Images/UI/Buttons/Pause Button/Unclicked.png')
-        screen.blit(pygame.transform.scale(pygame.image.load('Images/UI/Menus/Pause.png'), (SCREEN_WIDTH, SCREEN_HEIGHT)), (0, 0))
+        image = pygame.transform.scale(pygame.image.load('Images/UI/Menus/Pause.png'), (SCREEN_WIDTH, SCREEN_HEIGHT))
+        screen.blit(image, (0, 0))
  
         state = buttons.checkForClicks(events, state)
         buttons.blit(screen)
