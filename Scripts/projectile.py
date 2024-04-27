@@ -32,7 +32,7 @@ class Dagger(pygame.sprite.Sprite):
 
         for enemy in enemies.sprites:
             if self.rect.colliderect(enemy.rect):
-                enemy.takeDamage(self.damage, player)
+                enemy.takeDamage(self.damage, player, (self.mouse_x * self.speed, self.mouse_y * self.speed))
                 self.kill()
 
         if self.rect.colliderect(screen.get_rect()):

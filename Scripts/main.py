@@ -14,7 +14,7 @@ SCREEN_HEIGHT = 500
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 # player stuff
-character = player.Player(screen, 10, 3, 100)
+character = player.Player(screen, 10, 3, 100000)
 
 idleAnimationCycle = 1
 playerShouldChangeIdleAnim = 1

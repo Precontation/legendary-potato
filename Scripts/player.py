@@ -18,7 +18,7 @@ class Player(pygame.sprite.Sprite):
         self.shouldChangeIdleAnim = 1
 
         self.projectiles = pygame.sprite.Group()
-        self.weaponType = "Old Dagger"
+        self.weaponType = "Dagger"
         self.damage = 10
         
         self.screenCenterWidth = (screen.get_width() - self.rect.width) / 2
@@ -106,44 +106,56 @@ class Player(pygame.sprite.Sprite):
         return newY
         
     def move(self, keys, screen, enemyManager):
-        oldPlayerDir = self.direction
         hasHeldX = False
         hasHeldY = False
         hasMoved = False
 
+        directions = {
+            'Up': False,
+            'Down': False,
+            'Left': False,
+            'Right': False
+        }
+
         if keys[pygame.K_w] or keys[pygame.K_UP]:
-            self.direction = 'Up'
+            directions['Up'] = True
             self.rect.y -= self.moveSpeed
             hasMoved = True
         if keys[pygame.K_s] or keys[pygame.K_DOWN]:
-            self.direction = 'Down'
+            directions['Down'] = True
             self.rect.y += self.moveSpeed
             hasMoved = True
         if keys[pygame.K_a] or keys[pygame.K_LEFT]:
-            self.direction = 'Left'
+            directions['Left'] = True
             self.rect.x -= self.moveSpeed
             hasMoved = True
         if keys[pygame.K_d] or keys[pygame.K_RIGHT]:
-            self.direction = 'Right'
+            directions['Right'] = True
             self.rect.x += self.moveSpeed
             hasMoved = True
 
-        if ((keys[pygame.K_a] or keys[pygame.K_LEFT]) and (keys[pygame.K_d] or keys[pygame.K_RIGHT])) and (self.direction == 'Right' or self.direction == 'Left'):
-            self.direction = oldPlayerDir
+        if (directions['Left'] == True and directions['Right'] == True):
             hasHeldX = True
-        if ((keys[pygame.K_w] or keys[pygame.K_UP]) and (keys[pygame.K_s] or keys[pygame.K_DOWN])) and (self.direction == 'Up' or self.direction == 'Down'):
-            self.direction = oldPlayerDir
+        if (directions['Up'] == True and directions['Down'] == True):
             hasHeldY = True
 
-        if (hasHeldX and not hasHeldY) and (keys[pygame.K_LEFT] or keys[pygame.K_a]): self.direction = "Left"
-        if (hasHeldX and not hasHeldY) and (keys[pygame.K_RIGHT] or keys[pygame.K_r]): self.direction = "Right"
-        if (hasHeldY and not hasHeldX) and (keys[pygame.K_UP] or keys[pygame.K_w]): self.direction = "Up"
-        if (hasHeldY and not hasHeldX) and (keys[pygame.K_DOWN] or keys[pygame.K_s]): self.direction = "Down"
+        if not hasHeldY:
+            if (directions['Up'] == True): self.direction = 'Up'
+            if (directions['Down'] == True): self.direction = 'Down'
+        elif not hasHeldX and (directions['Left'] == False and (directions['Right'] == False)):
+                if (directions['Up'] == True): self.direction = 'Up'
+                if (directions['Down'] == True): self.direction = 'Down'
+        if not hasHeldX:
+            if (directions['Left'] == True): self.direction = 'Left'
+            if (directions['Right'] == True): self.direction = 'Right'
+        elif not hasHeldY and (directions['Up'] == False) and (directions['Down'] == False):
+            if (directions['Left'] == True): self.direction = 'Left'
+            if (directions['Right'] == True): self.direction = 'Right'
 
-        if not keys[pygame.K_w] and not keys[pygame.K_UP] and not keys[pygame.K_a] and not keys [pygame.K_LEFT] and not keys[pygame.K_s] and not keys[pygame.K_DOWN] and not keys[pygame.K_d] and not keys[pygame.K_RIGHT]:
+        if not hasMoved:
             self.image = pygame.transform.scale_by(pygame.image.load('Images/Player/' + self.direction + '/Idle' + str(self.idleAnimationCycle) + self.attacking + str(self.attackingCycle) + '.png'), 5)
         else:
-            if (not hasHeldX and not hasHeldY) and hasMoved:
+            if not (hasHeldX and (self.direction == 'Left' or self.direction == 'Right')) and not (hasHeldY and (self.direction == 'Up' or self.direction == 'Down')):
               self.image = pygame.transform.scale_by(pygame.image.load('Images/Player/' + self.direction + '/Moving' + str(self.moveAnimationCycle) + self.attacking + str(self.attackingCycle) + '.png'), 5)
             else:
                 self.image = pygame.transform.scale_by(pygame.image.load('Images/Player/' + self.direction + '/Idle' + str(self.idleAnimationCycle) + self.attacking + str(self.attackingCycle) + '.png'), 5)

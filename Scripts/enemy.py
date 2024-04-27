@@ -70,15 +70,17 @@ class DirectionalEnemy(pygame.sprite.Sprite):
             self.shouldChangeAnim += 1
         self.image = pygame.transform.scale_by(pygame.image.load('Images/Enemies/' + self.imageName + '/' + self.direction + str(self.animationCycle) + '.png'), 5)
     
-    def takeDamage(self, amount, player):
+    def takeDamage(self, amount, player, velocity):
         self.health -= amount
+        self.rect.x += velocity[0] * 3
+        self.rect.y += velocity[1] * 3
         if self.health <= 0:
             player.kills += 1
             self.kill()
 
     def checkAttack(self, player):
         if self.rect.colliderect(player.rect):
-            self.takeDamage(player.damage, player)
+            self.takeDamage(player.damage, player, 0)
 
     def checkIfHitPlayer(self, player):
         if self.rect.colliderect(player.rect):
@@ -137,15 +139,17 @@ class DirectionlessEnemy(pygame.sprite.Sprite):
             self.shouldChangeAnim += 1
         self.image = pygame.transform.scale_by(pygame.image.load('Images/Enemies/' + self.enemyType + "/" + str(self.animationCycle) + '.png'), 5)
     
-    def takeDamage(self, amount, player):
+    def takeDamage(self, amount, player, velocity):
         self.health -= amount
+        self.rect.x += velocity[0] * 3
+        self.rect.y += velocity[1] * 3
         if self.health <= 0:
             player.kills += 1
             self.kill()
 
     def checkAttack(self, player):
         if self.rect.colliderect(player.rect):
-            self.takeDamage(player.damage, player)
+            self.takeDamage(player.damage, player, 0)
 
     def checkIfHitPlayer(self, player):
         if self.rect.colliderect(player.rect):
@@ -210,15 +214,17 @@ class RotationEnemy(pygame.sprite.Sprite):
         
         self.image = pygame.transform.rotate(self.original_image, angle)
 
-    def takeDamage(self, amount, player):
+    def takeDamage(self, amount, player, velocity):
         self.health -= amount
+        self.rect.x += velocity[0] * 3
+        self.rect.y += velocity[1] * 3
         if self.health <= 0:
             player.kills += 1
             self.kill()
             
     def checkAttack(self, player):
         if self.rect.colliderect(player.rect):
-            self.takeDamage(player.damage, player)
+            self.takeDamage(player.damage, player, 0)
     
     def checkIfHitPlayer(self, player):
         if self.rect.colliderect(player.rect):
