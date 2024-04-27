@@ -1,10 +1,8 @@
 import pygame
 
 class Background():
-
-
     def __init__(self, screen) -> None:
-        backgroundName = 'Tiles'
+        backgroundName = 'Bubbles'
 
         self.scale = [screen.get_width(), screen.get_height()]
         self.image = pygame.image.load('Images/Decoration/Background/' + backgroundName + '.png')

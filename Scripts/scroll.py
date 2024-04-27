@@ -1,19 +1,39 @@
-def ScrollRight(bg, screen, scrollAmount):
+def ScrollRight(bg, enemy, screen, scrollAmount, world_x, projectiles):
     bg.ScrollRight(scrollAmount)
     bg.CheckScroll(screen)
-    # this is where you put other enemmies, items, blocks, etc
+    enemy.ScrollRight(scrollAmount)
+
+    for projectile in projectiles:
+            projectile.ScrollRight(scrollAmount)
+
+    return world_x - scrollAmount
     
-def ScrollLeft(bg, screen, scrollAmount):
+def ScrollLeft(bg, enemy, screen, scrollAmount, world_x, projectiles):
     bg.ScrollLeft(scrollAmount)
     bg.CheckScroll(screen)
-    # this is where you put other enemmies, items, blocks, etc
+    enemy.ScrollLeft(scrollAmount)
 
-def ScrollUp(bg, screen, scrollAmount):
+    for projectile in projectiles:
+        projectile.ScrollLeft(scrollAmount)
+
+    return world_x + scrollAmount
+
+def ScrollUp(bg, enemy, screen, scrollAmount, world_y, projectiles):
     bg.ScrollUp(scrollAmount)
     bg.CheckScroll(screen)
-    # this is where you put other enemmies, items, blocks, etc
+    enemy.ScrollUp(scrollAmount)
 
-def ScrollDown(bg, screen, scrollAmount):
+    for projectile in projectiles:
+        projectile.ScrollUp(scrollAmount)
+
+    return world_y - scrollAmount
+
+def ScrollDown(bg, enemy, screen, scrollAmount, world_y, projectiles):
     bg.ScrollDown(scrollAmount)
     bg.CheckScroll(screen)
-    # this is where you put other enemmies, items, blocks, etc
+    enemy.ScrollDown(scrollAmount)
+
+    for projectile in projectiles:
+        projectile.ScrollDown(scrollAmount)
+
+    return world_y + scrollAmount
