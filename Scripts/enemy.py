@@ -64,8 +64,6 @@ class DirectionalEnemy(pygame.sprite.Sprite):
         self.rect.y += scrollAmount
     
     def doAnimStuff(self, dirvect):
-        print(dirvect)
-
         if dirvect.y < 0:
             self.direction = 'Up'
         elif dirvect.y >= 0:
@@ -73,7 +71,6 @@ class DirectionalEnemy(pygame.sprite.Sprite):
         if abs(dirvect.x) > abs(dirvect.y):
             if dirvect.x > 0:
                 self.direction = 'Right'
-                print('right')
             elif dirvect.x <= 0:
                 self.direction = 'Left'
 
