@@ -14,13 +14,13 @@ SCREEN_HEIGHT = 500
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 # player stuff
-character = player.Player(screen, 10, 3, 100000)
+character = player.Player(screen, 10, 3, 1000)
 
 idleAnimationCycle = 1
 playerShouldChangeIdleAnim = 1
 playerIdleAnimSpeed = 10  #5 or 10
 
-manager = enemyManager.EnemyManager(screen, 5, 100000)
+manager = enemyManager.EnemyManager(screen, 6, 100)
 
 # moving around stuff
 world_x = 0
@@ -55,18 +55,22 @@ while running:
                     state = 'Running'
 
     if state == 'Running':
+        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+
         world_x = character.scrollX(world_x, screen, bg, manager)
         world_y = character.scrollY(world_y, screen, bg, manager)
 
         bgImage = pygame.transform.scale_by(pygame.image.load('Images/Decoration/Background/' + backgroundName + '.png'), 15)
         bg.ShowBackground(screen)
-    
-        character.attack(keys, manager)
-        character.move(keys, screen, manager)
+
         manager.move(character)
         manager.blit(screen)
         manager.spawnEnemies(screen)
+
+        character.attack(keys, manager)
+        character.move(keys, screen, manager)
         character.health -= manager.checkIfHit(character)
+        manager.checkCursorTouches()
         if character.health < 0: character.health = 0
         screen.blit(font.render('Health: ' + str(round(character.health)), 1, 'black', None), (25, SCREEN_HEIGHT / 1.3)) # temporary
         screen.blit(font.render('Kills: ' + str(round(character.kills)), 1, 'black', None), (25, 10)) # temporary
@@ -79,8 +83,10 @@ while running:
     elif state == 'Paused':
         image = pygame.transform.scale(pygame.image.load('Images/UI/Menus/Pause.png'), (SCREEN_WIDTH, SCREEN_HEIGHT))
         screen.blit(image, (0, 0))
- 
-        state = buttons.checkForClicks(events, state)
+
+        if not len(events) == 0:
+            state = buttons.checkForClicks(events, state)
+
         buttons.blit(screen)
 
         if keys[pygame.K_SPACE] and keys[pygame.K_r]:

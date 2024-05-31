@@ -9,6 +9,7 @@ class Player(pygame.sprite.Sprite):
 
         self.image = pygame.transform.scale_by(pygame.image.load('Images/Player/Up/Idle1.png'), 5)
         self.rect = self.image.get_rect()
+        self.mask = pygame.mask.from_surface(self.image, 0)
 
         self.animSpeed = animSpeed
         self.animLimit = animLimit
@@ -46,7 +47,7 @@ class Player(pygame.sprite.Sprite):
     def attack(self, keys, enemyManager):
         if self.attacking == '':
             self.shouldChangeAttackingCycle = 0
-            if keys[pygame.K_SPACE]:
+            if keys[pygame.K_SPACE] or pygame.mouse.get_pressed()[0] == True:
                 if not self.hasPressedSpace:
                         self.hasPressedSpace = True
                         if self.weaponType == 'Sword':
@@ -159,6 +160,7 @@ class Player(pygame.sprite.Sprite):
               self.image = pygame.transform.scale_by(pygame.image.load('Images/Player/' + self.direction + '/Moving' + str(self.moveAnimationCycle) + self.attacking + str(self.attackingCycle) + '.png'), 5)
             else:
                 self.image = pygame.transform.scale_by(pygame.image.load('Images/Player/' + self.direction + '/Idle' + str(self.idleAnimationCycle) + self.attacking + str(self.attackingCycle) + '.png'), 5)
+        self.mask = pygame.mask.from_surface(self.image, 0)
         self.doAnimStuff(keys, screen, enemyManager)
         return self.direction
     
