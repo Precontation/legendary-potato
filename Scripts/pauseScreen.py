@@ -27,13 +27,22 @@ class PauseButton(pygame.sprite.Sprite):
     def checkForClick(self, event, state):
         self.buttonPressed = False
         newState = state
-        if event.type == pygame.MOUSEBUTTONDOWN and self.rect.collidepoint(event.pos):
+
+        isCollided = False
+
+        try:
+            isCollided = self.rect.collidepoint(event.pos)
+        except:
+            iscollided = False
+
+        if event.type == pygame.MOUSEBUTTONDOWN and isCollided:
             self.clicked = True
         elif event.type == pygame.MOUSEBUTTONUP:
             self.clicked = False
-            if self.rect.collidepoint(event.pos):
+            if isCollided:
                 newState = self.button
-        return newState
+
+        return newState, isCollided
 
 class Group(pygame.sprite.Group):
     def blit(self, screen):
@@ -44,7 +53,17 @@ class Group(pygame.sprite.Group):
     def checkForClicks(self, events, state):
         # Do something to all the sprites in the group
         newState = state
+        frameCollided = False
+
         for sprite in self.sprites():
             for event in events:
-                newState = sprite.checkForClick(event, newState)
+                newState, isCollided = sprite.checkForClick(event, newState)
+                if isCollided == True:
+                    frameCollided = True
+
+        if frameCollided == True:
+            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_HAND)
+        else:
+            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+
         return newState

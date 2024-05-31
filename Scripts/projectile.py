@@ -24,6 +24,8 @@ class Dagger(pygame.sprite.Sprite):
     
         self.image = pygame.transform.rotate(self.original_image, math.degrees(self.angle) - 180)
         
+        self.mask = pygame.mask.from_surface(self.image, 0)
+        
         self.damage = damage
 
     def move(self, screen, enemies, player):
@@ -31,11 +33,16 @@ class Dagger(pygame.sprite.Sprite):
         self.rect.y += self.mouse_y * self.speed
 
         for enemy in enemies.sprites:
-            if self.rect.colliderect(enemy.rect):
+            if pygame.sprite.collide_mask(self, enemy):
                 enemy.takeDamage(self.damage, player, (self.mouse_x * self.speed, self.mouse_y * self.speed))
                 self.kill()
 
-        if self.rect.colliderect(screen.get_rect()):
+        screenRect = screen.get_rect()
+        screenRect.inflate_ip(1000, 1000)
+
+        inBounds = screenRect.collidepoint(self.rect.x, self.rect.y)
+
+        if inBounds:
             screen.blit(self.image, self.rect)
         else:
             self.kill()

@@ -55,3 +55,7 @@ class EnemyManager():
     def checkAttack(self, player):
         for enemy in self.sprites:
             enemy.checkAttack(player)
+
+    def checkCursorTouches(self):
+        for enemy in self.sprites:
+            enemy.checkCursorTouch()
