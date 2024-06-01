@@ -20,7 +20,7 @@ idleAnimationCycle = 1
 playerShouldChangeIdleAnim = 1
 playerIdleAnimSpeed = 10  #5 or 10
 
-manager = enemyManager.EnemyManager(screen, 6, 100)
+manager = enemyManager.EnemyManager(screen, 7, 100)
 
 # moving around stuff
 world_x = 0
@@ -55,7 +55,7 @@ while running:
                     state = 'Running'
 
     if state == 'Running':
-        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_ARROW)
+        pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_CROSSHAIR)
 
         world_x = character.scrollX(world_x, screen, bg, manager)
         world_y = character.scrollY(world_y, screen, bg, manager)
@@ -70,7 +70,6 @@ while running:
         character.attack(keys, manager)
         character.move(keys, screen, manager)
         character.health -= manager.checkIfHit(character)
-        manager.checkCursorTouches()
         if character.health < 0: character.health = 0
         screen.blit(font.render('Health: ' + str(round(character.health)), 1, 'black', None), (25, SCREEN_HEIGHT / 1.3)) # temporary
         screen.blit(font.render('Kills: ' + str(round(character.kills)), 1, 'black', None), (25, 10)) # temporary

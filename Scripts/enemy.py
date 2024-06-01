@@ -1,8 +1,10 @@
+from typing import Any
 import pygame
 import math
 from random import randint
 
 import pygame.imageext
+from pygame.sprite import Group
 
 def create(enemyID, screen):
     if enemyID == 1:
@@ -13,11 +15,12 @@ def create(enemyID, screen):
         enemy = RotationEnemy(screen, 'Clyve', 5, 2, 5, 1, 25)
     elif enemyID == 4:
         enemy = DirectionalEnemy(screen, 'Ligila', 15, 2, 5, 1, 100)
-        print('lig')
     elif enemyID == 5:
         enemy = DirectionlessEnemy(screen, 'Puddle Of Health', 15, 4, 0.00001, -0.1, 1)
     elif enemyID == 6:
         enemy = DirectionlessEnemy(screen, 'Bob', 10, 2, -5, -5, 100)
+    elif enemyID == 7:
+        enemy = ProjectileEnemy(screen, 'Sentient Stone', 1, 1, 0.5, 15, 100, 100, 10)
     return enemy
 
 class Enemy(pygame.sprite.Sprite):
@@ -99,10 +102,6 @@ class Enemy(pygame.sprite.Sprite):
 
         self.doAnimStuff(dirvect, player)
 
-    def checkCursorTouch(self):
-        if self.rect.collidepoint(pygame.mouse.get_pos()):
-            pygame.mouse.set_cursor(pygame.SYSTEM_CURSOR_CROSSHAIR)
-
 class DirectionalEnemy(Enemy, pygame.sprite.Sprite):
     def __init__(self, screen, image, animSpeed, animLimit, moveSpeed, damage, health):
         super().__init__(screen, image, animSpeed, animLimit, moveSpeed, damage, health)
@@ -170,5 +169,83 @@ class RotationEnemy(Enemy, pygame.sprite.Sprite):
         angle = math.degrees(-math.atan2(playerY - self.rect.y, playerX - self.rect.x)) - 90
         
         self.image = pygame.transform.rotate(self.original_image, angle)
-        
         self.mask = pygame.mask.from_surface(self.image, 0)
+        
+class ProjectileEnemy(Enemy, pygame.sprite.Sprite):
+    def __init__(self, screen, image, animSpeed, animLimit, moveSpeed, damage, health, attackLimit, projectileSpeed) -> None:
+        super().__init__(screen, image, animSpeed, animLimit, moveSpeed, damage, health)
+
+        self.original_image = pygame.transform.scale_by(pygame.image.load('Images/Enemies/' + self.enemyType + '/1.png'), 5)
+        self.image = self.original_image
+
+        self.attackTimer = 0
+        self.attackLimit = attackLimit
+        self.projectileSpeed = projectileSpeed
+
+        self.projectiles = pygame.sprite.Group()
+
+        self.mask = pygame.mask.from_surface(self.image, 0)
+
+    def doAnimStuff(self, dirvect, player):
+        if self.shouldChangeAnim >= self.animSpeed:
+            self.animationCycle += 1
+            if self.animationCycle >= self.animLimit:
+                self.animationCycle = 1
+            self.shouldChangeAnim = 1
+        else: 
+            self.shouldChangeAnim += 1
+        self.image = pygame.transform.scale_by(pygame.image.load('Images/Enemies/' + self.enemyType + '/' + str(self.animationCycle) + '.png'), 5)
+        self.mask = pygame.mask.from_surface(self.image, 0)
+        self.checkThrow(player)
+
+    def checkThrow(self, player):
+        self.projectiles.update(player)
+        if self.attackTimer > self.attackLimit:
+            self.attackTimer = 0
+            self.player = player
+            self.shootProjectile()
+        else:
+            self.attackTimer += 1
+
+    def shootProjectile(self):
+        print('shoot!')
+        projectile = Projectile(self.enemyType, self.rect, 2)
+        projectile.image = pygame.transform.scale_by(pygame.image.load('Images/Enemies/' + projectile.enemyType + '/Projectiles/' + str(projectile.animCycle) + '.png'), 5)
+        self.projectiles.add(projectile)
+
+class Projectile(pygame.sprite.Sprite):
+    def __init__(self, enemyType, position, animLimit) -> None:
+        pygame.sprite.Sprite.__init__(self)
+
+        self.animCycle = 1
+        self.animLimit = animLimit
+
+        self.enemyType = enemyType
+
+        self.image = pygame.transform.scale_by(pygame.image.load('Images/Enemies/' + self.enemyType + '/Projectiles/' + str(self.animCycle) + '.png'), 5)
+
+        self.rect = self.image.get_rect()
+        self.mask = pygame.mask.from_surface(self.image, 0)
+
+        self.speed = 10
+
+        dx = position.x - self.rect.x
+        dy = position.y - self.rect.y
+
+        self.angle = math.atan2(dx, dy)
+        self.rect = position
+        
+    def doAnimStuff(self, player):
+        if self.shouldChangeAnim >= self.animSpeed:
+            self.animationCycle += 1
+            if self.animationCycle >= self.animLimit:
+                self.animationCycle = 1
+            self.shouldChangeAnim = 1
+        else: 
+            self.shouldChangeAnim += 1
+        self.image = pygame.transform.scale_by(pygame.image.load('Images/Enemies/' + self.enemyType + '/Projectiles/' + str(self.animCycle) + '.png'), 5)
+        self.mask = pygame.mask.from_surface(self.image, 0)
+
+    def update(self, player) -> None:
+        self.rect.x -= math.sin(self.angle)
+        self.rect.y -= math.cos(self.angle)

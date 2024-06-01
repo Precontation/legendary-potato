@@ -47,7 +47,7 @@ class Player(pygame.sprite.Sprite):
     def attack(self, keys, enemyManager):
         if self.attacking == '':
             self.shouldChangeAttackingCycle = 0
-            if keys[pygame.K_SPACE] or pygame.mouse.get_pressed()[0] == True:
+            if pygame.mouse.get_pressed()[0] == True:
                 if not self.hasPressedSpace:
                         self.hasPressedSpace = True
                         if self.weaponType == 'Sword':
@@ -117,6 +117,13 @@ class Player(pygame.sprite.Sprite):
             'Left': False,
             'Right': False
         }
+
+        if keys[pygame.K_SPACE]:
+            self.moveSpeed = 10
+            self.animSpeed = 5
+        else:
+            self.moveSpeed = 7
+            self.animSpeed = 10
 
         if keys[pygame.K_w] or keys[pygame.K_UP]:
             directions['Up'] = True

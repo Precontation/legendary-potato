@@ -15,7 +15,7 @@ class EnemyManager():
     def spawnEnemies(self, screen):
         if self.shouldSpawn >= self.spawnTime:
             print('Spawning an enemy!')
-            spriteID = randint(1, self.maxEnemyTypes)
+            spriteID = randint(7, self.maxEnemyTypes)
             self.create(spriteID, screen)
             self.amountOfEnemies += 1
             self.shouldSpawn = 1
@@ -55,7 +55,3 @@ class EnemyManager():
     def checkAttack(self, player):
         for enemy in self.sprites:
             enemy.checkAttack(player)
-
-    def checkCursorTouches(self):
-        for enemy in self.sprites:
-            enemy.checkCursorTouch()
