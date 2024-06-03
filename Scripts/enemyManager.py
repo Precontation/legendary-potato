@@ -15,7 +15,7 @@ class EnemyManager():
     def spawnEnemies(self, screen):
         if self.shouldSpawn >= self.spawnTime:
             print('Spawning an enemy!')
-            spriteID = randint(7, self.maxEnemyTypes)
+            spriteID = randint(1, self.maxEnemyTypes)
             self.create(spriteID, screen)
             self.amountOfEnemies += 1
             self.shouldSpawn = 1

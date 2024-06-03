@@ -14,13 +14,13 @@ SCREEN_HEIGHT = 500
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
 # player stuff
-character = player.Player(screen, 10, 3, 1000)
+character = player.Player(screen, 10, 3, 100)
 
 idleAnimationCycle = 1
 playerShouldChangeIdleAnim = 1
 playerIdleAnimSpeed = 10  #5 or 10
 
-manager = enemyManager.EnemyManager(screen, 7, 100)
+manager = enemyManager.EnemyManager(screen, 6, 100)
 
 # moving around stuff
 world_x = 0
